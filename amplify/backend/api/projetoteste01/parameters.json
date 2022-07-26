@@ -1,0 +1,5 @@
+{
+  "AppSyncApiName": "projetoteste01",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false
+}
