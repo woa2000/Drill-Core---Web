@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { Col, Row, Table, Button, Input, message, Space, Switch, Select, Popconfirm, Modal, Form } from 'antd';
 import 'antd/dist/antd.css';
@@ -12,9 +12,11 @@ import './styles.css';
 import * as equipeServices from '../../services/equipeServices';
 import { Equipe } from '../../models';
 
+import * as XLSX from 'xlsx';
+
 const { Option } = Select;
 
-const ModalNovoMembro = ({modal_novo, setmodal_novo}) => {
+const ModalNovoMembro = ({ modal_novo, setmodal_novo }) => {
   const [form] = Form.useForm();
 
   const [nome, setNome] = useState('')
@@ -22,11 +24,10 @@ const ModalNovoMembro = ({modal_novo, setmodal_novo}) => {
 
   const salvarMembro = async (nome, funcao) => {
     const response = await equipeServices.salvarMembro(nome, funcao);
-    console.log('salvarMembro', response)    
-    if(response.success === true)
-    {
+    console.log('salvarMembro', response)
+    if (response.success === true) {
       message.success('Membro adicionado com sucesso!');
-    }    
+    }
   }
 
   function tog_novo() {
@@ -42,133 +43,36 @@ const ModalNovoMembro = ({modal_novo, setmodal_novo}) => {
   }
 
   function handleSubmit(e) {
-    if (nome != "") 
-    {
+    if (nome != "") {
       console.log('salvarMembro', nome, funcao)
       salvarMembro(nome, funcao).then(() => {
         tog_novo()
       })
     }
   }
-  return(
-<Modal
-        visible={modal_novo}
-        title="Novo Membro"
-        onOk={tog_novo}
-        onCancel={tog_novo}
-        footer={[
-          <Button key="back" onClick={tog_novo}>
-            Cancelar
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleSubmit}>
-            Salvar
-          </Button>,
-        ]}
-      >
-          <Form
-            layout='vertical'
-            form={form}
-            initialValues={{
-              layout: 'vertical',
-            }}
-          >
-            <Form.Item 
-              name="Nome"
-              label="Nome"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              <Input placeholder="Nome Completo"  onChange={handleNomeChange}/>
-            </Form.Item>
-            <Form.Item 
-              name="Funcao"
-              label="Função"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              <Select
-                defaultValue="Supervisor"
-                style={{
-                  width: '100%',
-                }}
-                onChange={handleFuncaoChange}
-                name="funcao"
-                id='funcao'
-              >
-                <Option value="Supervisor">Supervisor</Option>
-                <Option value="Operador">Operador</Option>
-                <Option value="Auxiliar">Auxiliar</Option>
-                <Option value="Fiscal">Fiscal</Option>
-              </Select>
-            </Form.Item>
-          </Form>
-      </Modal>
-  )
-}
-
-const ModalAtualizaMembro = ({modal_edicao, setmodal_edicao, membro}) => {
-  const [form] = Form.useForm();
-
-  const atualizarMembro = async (membroAtualizado, membro) => {
-    const response = await equipeServices.atualizarMembro(membroAtualizado, membro);
-    console.log('atualizarMembro', response)    
-    if(response.success === true)
-    {
-      message.success('Membro atualizado com sucesso!');
-    }    
-  }
-
-  const loadInformacoes = () => {	
-    form.setFieldsValue({
-      Nome: membro.Nome,
-      Funcao: membro.Funcao,
-      Ativo: membro.Ativo,
-    });
-	}
-
-  useEffect(() => {
-		loadInformacoes();
-	}, [membro]);
-
-  const tog_edicao = () => {
-    setmodal_edicao(!modal_edicao);
-  }
-
-  const handleSubmit = () => {
-      console.log('membro para edição ->', membro)
-      console.log('membro atualizado ->', form.getFieldValue());
-      atualizarMembro(form.getFieldValue() , membro).then(() => {
-        tog_edicao()
-      });
-  }
-
-  return(
+  return (
     <Modal
-        visible={modal_edicao}
-        title="Editar Membro"
-        onOk={tog_edicao}
-        onCancel={tog_edicao}
-        footer={[
-          <Button key="back" onClick={tog_edicao}>
-            Cancelar
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleSubmit}>
-            Salvar
-          </Button>,
-        ]}
-      >
-          <Form
+      visible={modal_novo}
+      title="Novo Membro"
+      onOk={tog_novo}
+      onCancel={tog_novo}
+      footer={[
+        <Button key="back" onClick={tog_novo}>
+          Cancelar
+        </Button>,
+        <Button key="submit" type="primary" onClick={handleSubmit}>
+          Salvar
+        </Button>,
+      ]}
+    >
+      <Form
         layout='vertical'
         form={form}
+        initialValues={{
+          layout: 'vertical',
+        }}
       >
-        {/* <Input type='hidden' id='id'  name='id' /> */}
-        <Form.Item               
+        <Form.Item
           name="Nome"
           label="Nome"
           rules={[
@@ -177,9 +81,104 @@ const ModalAtualizaMembro = ({modal_edicao, setmodal_edicao, membro}) => {
             },
           ]}
         >
-          <Input/>
+          <Input placeholder="Nome Completo" onChange={handleNomeChange} />
         </Form.Item>
-        <Form.Item 
+        <Form.Item
+          name="Funcao"
+          label="Função"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Select
+            defaultValue="Supervisor"
+            style={{
+              width: '100%',
+            }}
+            onChange={handleFuncaoChange}
+            name="funcao"
+            id='funcao'
+          >
+            <Option value="Supervisor">Supervisor</Option>
+            <Option value="Operador">Operador</Option>
+            <Option value="Auxiliar">Auxiliar</Option>
+            <Option value="Fiscal">Fiscal</Option>
+          </Select>
+        </Form.Item>
+      </Form>
+    </Modal>
+  )
+}
+
+const ModalAtualizaMembro = ({ modal_edicao, setmodal_edicao, membro }) => {
+  const [form] = Form.useForm();
+
+  const atualizarMembro = async (membroAtualizado, membro) => {
+    const response = await equipeServices.atualizarMembro(membroAtualizado, membro);
+    console.log('atualizarMembro', response)
+    if (response.success === true) {
+      message.success('Membro atualizado com sucesso!');
+    }
+  }
+
+  const loadInformacoes = () => {
+    form.setFieldsValue({
+      Nome: membro.Nome,
+      Funcao: membro.Funcao,
+      Ativo: membro.Ativo,
+    });
+  }
+
+  useEffect(() => {
+    loadInformacoes();
+  }, [membro]);
+
+  const tog_edicao = () => {
+    setmodal_edicao(!modal_edicao);
+  }
+
+  const handleSubmit = () => {
+    console.log('membro para edição ->', membro)
+    console.log('membro atualizado ->', form.getFieldValue());
+    atualizarMembro(form.getFieldValue(), membro).then(() => {
+      tog_edicao()
+    });
+  }
+
+  return (
+    <Modal
+      visible={modal_edicao}
+      title="Editar Membro"
+      onOk={tog_edicao}
+      onCancel={tog_edicao}
+      footer={[
+        <Button key="back" onClick={tog_edicao}>
+          Cancelar
+        </Button>,
+        <Button key="submit" type="primary" onClick={handleSubmit}>
+          Salvar
+        </Button>,
+      ]}
+    >
+      <Form
+        layout='vertical'
+        form={form}
+      >
+        {/* <Input type='hidden' id='id'  name='id' /> */}
+        <Form.Item
+          name="Nome"
+          label="Nome"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
           name="Funcao"
           label="Função"
           rules={[
@@ -201,33 +200,31 @@ const ModalAtualizaMembro = ({modal_edicao, setmodal_edicao, membro}) => {
             <Option value="Fiscal">Fiscal</Option>
           </Select>
         </Form.Item>
-      </Form> 
-      </Modal>
-      
+      </Form>
+    </Modal>
+
   )
 }
 
-const ListaMembros = ({equipe, setmodal_edicao, setMembro}) => {
+const ListaMembros = ({ equipe, setmodal_edicao, setMembro }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
 
   const alterarStatus = async (status, membro) => {
     const response = await equipeServices.setAtivo(status, membro);
-    if(response.success === true)
-    {
+    if (response.success === true) {
       // message.success('Status alterado com sucesso!');
       //getEquipes()
-    }    
+    }
   }
 
   const deletarMembro = async (membro) => {
     const response = await equipeServices.deleteColaborador(membro);
-    if(response.success === true)
-    {
+    if (response.success === true) {
       message.success('Membro excluído com sucesso!');
       //getEquipes()
-    }    
+    }
   }
 
   function handleEditar(membro) {
@@ -337,7 +334,7 @@ const ListaMembros = ({equipe, setmodal_edicao, setMembro}) => {
   };
 
   const columns = [
-    { 
+    {
       title: 'Nome',
       dataIndex: 'Nome',
       key: 'Nome',
@@ -369,7 +366,7 @@ const ListaMembros = ({equipe, setmodal_edicao, setMembro}) => {
         }
       ],
       onFilter: (value, record) => record.Funcao.toLowerCase().search(value.toLowerCase()) !== -1,
-    },  
+    },
     {
       title: 'Ativo',
       key: 'ativo',
@@ -386,12 +383,12 @@ const ListaMembros = ({equipe, setmodal_edicao, setMembro}) => {
       onFilter: (value, record) => record.Ativo.toString().search(value) !== -1,
       render: (_, record) => (
         <Space size="middle">
-         <Switch
-          checkedChildren={<CheckOutlined />}
-          unCheckedChildren={<CloseOutlined />}
-          checked={record.Ativo}
-          onClick={() => alterarStatus(!record.Ativo, record)}
-        />
+          <Switch
+            checkedChildren={<CheckOutlined />}
+            unCheckedChildren={<CloseOutlined />}
+            checked={record.Ativo}
+            onClick={() => alterarStatus(!record.Ativo, record)}
+          />
         </Space>
       )
     },
@@ -400,24 +397,24 @@ const ListaMembros = ({equipe, setmodal_edicao, setMembro}) => {
       key: 'action',
       render: (_, record) =>
         equipe.length >= 1 ? (
-          
+
           <Space size="middle">
             <Popconfirm title="Realmente deseja excluír o registro?" onConfirm={() => deletarMembro(record)}>
-                <a>Excluír</a>
+              <a>Excluír</a>
             </Popconfirm>
-            <a onClick={() => handleEditar(record)}>Editar</a> 
+            <a onClick={() => handleEditar(record)}>Editar</a>
           </Space>
-          
+
         ) : null,
     },
   ];
-  
+
   useEffect(() => {
-    
+
   }, [])
 
-  return(
-    <Table columns={columns} dataSource={equipe} onChange={onChange} key='TableEquipe' rowKey='id'/>
+  return (
+    <Table columns={columns} dataSource={equipe} onChange={onChange} key='TableEquipe' rowKey='id' />
   )
 
 }
@@ -430,12 +427,36 @@ function EquipePage() {
   const [modal_edicao, setmodal_edicao] = useState(false)
 
   const [membro, setMembro] = useState({});
-  
+
+
+  //create a function to import the data from excel file  and save it in the database 
+  const importarEquipe = async (file) => {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = (e) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, {
+        type: 'binary',
+      });
+      const first_sheet_name = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[first_sheet_name];
+      const data_json = XLSX.utils.sheet_to_json(worksheet);
+      data_json.forEach(element => {
+        console.log('linha => ',element.Nome, 'Cargo => ', element.Cargo)
+        const response =  equipeServices.salvarMembro(element.Nome, element.Cargo);
+        console.log('response => ',response)
+
+      });
+    };
+    reader.readAsBinaryString(file);
+  }
+
 
   useEffect(() => {
     const subscription = DataStore.observeQuery(Equipe).subscribe((snapshot) => {
       //isSynced can be used to show a loading spinner when the list is being loaded. 
-      const { items, isSynced } = snapshot;    
+      const { items, isSynced } = snapshot;
       getEquipes();
     });
 
@@ -446,7 +467,7 @@ function EquipePage() {
   }, [])
 
   const getEquipes = async () => {
-     const response = await equipeServices.getMembros();
+    const response = await equipeServices.getMembros();
     setEquipe(response);
   }
 
@@ -454,31 +475,38 @@ function EquipePage() {
     <div>
       <div className='title'>
         <h1>Equipe</h1>
-        <Button type="primary" 
-          icon={<UserAddOutlined />} 
+        <Button type="primary"
+          icon={<UserAddOutlined />}
           onClick={() => {
-              setmodal_novo(true)
-            }}
+            setmodal_novo(true)
+          }}
         >Novo Membro</Button>
+        {/* <input
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            importarEquipe(file);
+          }}
+        /> */}
       </div>
 
-      <ListaMembros 
-        equipe={equipe}  
+      <ListaMembros
+        equipe={equipe}
         setmodal_edicao={setmodal_edicao}
         setMembro={setMembro}
       />
 
       <ModalNovoMembro
-        modal_novo = {modal_novo}
-        setmodal_novo = {setmodal_novo}
-      />  
+        modal_novo={modal_novo}
+        setmodal_novo={setmodal_novo}
+      />
 
       <ModalAtualizaMembro
-        modal_edicao = {modal_edicao} 
-        setmodal_edicao = {setmodal_edicao} 
-        membro = {membro}
-      />        
-      
+        modal_edicao={modal_edicao}
+        setmodal_edicao={setmodal_edicao}
+        membro={membro}
+      />
+
     </div>
   )
 }

@@ -2,6 +2,7 @@ import { Projeto, Cliente, Alvo, Turno, EquipeProjeto, Equipe, Furo } from "../m
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { EqualityOperator } from "typescript";
 import * as clienteServices from './clienteServices';
+import moment from 'moment';
 
 interface ModelResult {
     success: boolean;
@@ -166,8 +167,10 @@ export async function getTurnos(projetoID: string): Promise<Turno[]> {
 }
 
 export async function salvarTurno(nomeTurno: string, codigo: string, inicio:string, termino: string,  projetoID: string ) : Promise<ModelResult> {
-  
-  const saved =  await DataStore.save(new Turno({ NomeTurno: nomeTurno, Codigo: codigo, Inicio: inicio, Termino: termino,  projetoID: projetoID }))
+  let ini = moment(inicio).format('HH:mm');
+  let ter = moment(termino).format('HH:mm');
+  console.log('ini ->', ini, ter);
+  const saved =  await DataStore.save(new Turno({ NomeTurno: nomeTurno, Codigo: codigo, Inicio: ini, Termino: ter,  projetoID: projetoID }))
   .then(() => { return { success: true} as ModelResult; })
   .catch(() => { return {success : false} as ModelResult; });
 
