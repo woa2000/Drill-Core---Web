@@ -28,6 +28,7 @@ import awsconfig from './aws-exports';
 
 import { Link } from 'react-router-dom';
 
+// import '@aws-amplify/ui/dist/style.css';
 Amplify.configure(awsconfig)
 
 const { Header, Content, Footer } = Layout;

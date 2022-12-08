@@ -72,5 +72,11 @@ export const MenuData = [
       },
     ]
   },
+  {
+    title: 'Usuários',
+    path: '/usuarios',
+    icon: <FaIcons.FaCartPlus />,
+    cName: 'nav-text'
+  },
   
 ];

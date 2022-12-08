@@ -49,7 +49,6 @@ const ModalNovoProjeto = ({modal_novo, setmodal_novo}) => {
         tog_novo()
       })
     }
-
     setNomeProjeto('');
     setClienteId('');
   }

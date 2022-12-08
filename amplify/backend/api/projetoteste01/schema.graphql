@@ -1,3 +1,19 @@
+type UsuarioDG @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userID: String
+  Nome: String
+  UserName: String
+  Email: String
+  Status: String
+}
+
+type UsuarioCliente @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userID: ID
+  clienteID: ID @index(name: "byCliente")
+  Cliente: Cliente @belongsTo(fields: ["clienteID"])
+}
+
 type Consistencia @model @auth(rules: [{allow: public}]) {
   id: ID!
   TipoSolo: String
@@ -175,6 +191,7 @@ type Cliente @model @auth(rules: [{allow: public}]) {
   Projetos: [Projeto] @hasMany(indexName: "byCliente", fields: ["id"])
   LogoClient: String
   Ativo: Boolean!
+  UsuarioCliente: [UsuarioCliente] @hasMany(indexName: "byCliente", fields: ["id"])
 }
 
 type Equipe @model @auth(rules: [{allow: public}]) {

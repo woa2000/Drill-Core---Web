@@ -12,6 +12,7 @@ import MaterialPage from "../pages/Material";
 import BoletimPage  from "../pages/Boletim";
 import DetalheBoletimPage from "../pages/DetalheBoletim";
 import ConfiguracaoPage from "../pages/Configuracao";
+import UsuarioPage from "../pages/Usuarios";
 
 
 const userRoutes = [
@@ -27,6 +28,7 @@ const userRoutes = [
     { path: "/material", component: MaterialPage },
     { path: "/boletim", component: BoletimPage },
     { path: "/detalheboletim", component: DetalheBoletimPage },
+    { path: "/usuarios", component: UsuarioPage },
 ];
 
 

@@ -1,0 +1,44 @@
+.boletim-pdf{
+    width: 770px;
+}
+
+.header-boletim{
+    padding: 5px;
+}
+
+.cards-boletim{
+    justify-content: space-between;
+}
+
+.cards-boletim .card {
+    width: 145px;
+}
+
+.cards-boletim .card .box{
+    height: 65px;
+}
+
+.cards-boletim .card:first-child { 
+    margin-top: 16px;
+}
+
+.cards-boletim .text-xl{
+    font-size: 16px;
+}
+
+.cards-boletim p{
+    margin-bottom: 0;
+    font-weight: 700;
+}
+
+.bg-yellow-500 {
+    background-color: #FFC107;
+}
+
+.bg-gray-500 {
+    background-color: #4c4c4c;
+}
+
+.btn-pdf {
+    margin-bottom: 10px;
+}
