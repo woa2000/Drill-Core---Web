@@ -14,11 +14,13 @@ import { Material } from '../../models';
 
 import * as XLSX from 'xlsx';
 
+
 function ListaObjetos({objetos, titulo, titulo_botao}) {
     const [modal_novo, setmodal_novo] = useState(false);
     const [modal_edicao, setmodal_edicao] = useState(false);
     const [objeto, setObjeto] = useState({});
 
+  
 
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
