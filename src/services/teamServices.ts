@@ -45,6 +45,7 @@ export async function saveSupervisors(supervisors: Equipe[], bulletinID: string)
     supervisors.map(async item => {
       DataStore.save(new SupervisorBoletim({
         boletimID: bulletinID,
+        equipeID: item.id,
         Equipe: new Equipe({
           Nome: item.Nome,
           Funcao: item.Funcao,
@@ -90,6 +91,7 @@ export async function saveOperators(operators: Equipe[], bulletinID: string): Pr
 
       DataStore.save(new OperadorBoletim({
         boletimID: bulletinID,
+        equipeID : equipe[0].id,
         Equipe: equipe[0]
       }))
       .then(response => {
@@ -131,6 +133,7 @@ export async function saveAssistants(assistants: Equipe[], bulletinID: string): 
 
       DataStore.save(new AuxiliarBoletim({
         boletimID: bulletinID,
+        equipeID: equipe[0].id,
         Equipe: equipe[0]
       }))
       .then(response => {
@@ -164,6 +167,7 @@ export async function saveInspectors(inspectors: Equipe[], bulletinID: string): 
 
       DataStore.save(new FiscalBoletim({
         boletimID: bulletinID,
+        equipeID: equipe[0].id,
         Equipe: equipe[0]
       }))
       .then(response => {

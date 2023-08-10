@@ -51,7 +51,7 @@ export async function salvarProjeto(nomeProjeto: string , clienteId: string) : P
   var saved = {success : false} as ModelResult; 
   if (client[0] != undefined)
   {
-     saved =  await DataStore.save(new Projeto({ NomeProjeto: nomeProjeto, Cliente: client[0] }))
+     saved =  await DataStore.save(new Projeto({ NomeProjeto: nomeProjeto, clienteID: client[0].id, Cliente: client[0] }))
     .then(() => { return { success: true} as ModelResult; })
     .catch(() => { return {success : false} as ModelResult; });
   }
@@ -88,7 +88,7 @@ export async function duplicarProjeto(id: string, turno: boolean, equipe: boolea
   var cliente = null;
   projeto.Cliente.then(x => cliente = x);
 
-  const novoProjeto = await DataStore.save(new Projeto({ NomeProjeto: 'Cópia_' + projeto.NomeProjeto , Cliente: cliente }))
+  const novoProjeto = await DataStore.save(new Projeto({ NomeProjeto: 'Cópia_' + projeto.NomeProjeto , clienteID: '', Cliente: cliente }))
   .then(async (data) => { 
     if(turno){
       const turnos = await DataStore.query(Turno, x => x.projetoID.eq(projeto.id))
@@ -106,7 +106,8 @@ export async function duplicarProjeto(id: string, turno: boolean, equipe: boolea
           membros.map(async (membro) => {
             var equipe = null;
             membro.Equipe.then(x => equipe = x);
-            const membersaved = await DataStore.save(new EquipeProjeto({ Equipe: equipe , projetoID: data.id, Ativo: true }))
+            var equipeID = equipe == null ? '':  equipe;
+            const membersaved = await DataStore.save(new EquipeProjeto({equipeID: equipeID , Equipe: equipe , projetoID: data.id, Ativo: true }))
             .then((data) => {console.log('equipe salva', data)})
             .catch((e) => {console.log('erro ao salvar equipe', e)})
 
@@ -140,7 +141,7 @@ export async function salvarAlvo(nomeAlvo: string, projetoID: string ) : Promise
   var saved =  {success : false} as ModelResult; 
   if (projeto[0] != undefined)
   {
-     saved =  await DataStore.save(new Alvo({ NomeAlvo: nomeAlvo, Projeto: projeto[0]}))
+     saved =  await DataStore.save(new Alvo({ NomeAlvo: nomeAlvo, projetoID: projeto[0].id,  Projeto: projeto[0]}))
     .then(() => { return { success: true} as ModelResult; })
     .catch(() => { return {success : false} as ModelResult; });
   }
@@ -288,7 +289,7 @@ export async function  salvarEquipeProjetoUnico(membroID:string , projetoID:stri
   var saved =  {success : false} as ModelResult;
   if (saved != undefined)
   {
-      saved = await DataStore.save(new EquipeProjeto({ Equipe: equipe[0], projetoID: projetoID, Ativo: true }))
+      saved = await DataStore.save(new EquipeProjeto({equipeID: equipe[0].id,  Equipe: equipe[0], projetoID: projetoID, Ativo: true }))
         .then(() => { return { success: true} as ModelResult; })
         .catch(() => { return {success : false} as ModelResult; });
   }
@@ -299,7 +300,7 @@ export async function  salvarEquipeProjetoUnico(membroID:string , projetoID:stri
 async function  loopsave(membros:Array<string> , projetoID:string){ 
   membros.map(async (membro) => {
     const equipe = await DataStore.query(Equipe, x => x.id.eq(membro));
-    await DataStore.save(new EquipeProjeto({ Equipe: equipe[0], projetoID: projetoID, Ativo: true }))
+    await DataStore.save(new EquipeProjeto({equipeID: equipe[0].id,  Equipe: equipe[0], projetoID: projetoID, Ativo: true }))
   })
 };
 

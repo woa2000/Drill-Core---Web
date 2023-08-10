@@ -1,0 +1,208 @@
+type UsuarioDG @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userID: String
+  Nome: String
+  UserName: String
+  Email: String
+  Status: String
+}
+
+type UsuarioCliente @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userID: ID
+  clienteID: ID @index(name: "byCliente")
+  Cliente: Cliente @belongsTo(fields: ["clienteID"])
+}
+
+type Consistencia @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  TipoSolo: String
+}
+
+type AtividadeBoletim @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Inicio: AWSTime
+  Termino: AWSTime
+  De: Float
+  Ate: Float
+  Recuperacao: Float
+  Caixa: String
+  Diametro: String
+  CodigoOrientacao: String
+  Observacao: String
+  atividadeID: ID! @index(name: "byAtividade")
+  Atividade: Atividade @belongsTo(fields: ["atividadeID"])
+  boletimID: ID! @index(name: "byBoletim")
+  orientacaoID: ID @index(name: "byOrientacao")
+  Consistencia: String
+  furoID: ID @index(name: "byFuro")
+  Furo: Furo @belongsTo(fields: ["furoID"])
+}
+
+type EquipeProjeto @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Ativo: Boolean!
+  equipeID: ID! @index(name: "byEquipe")
+  projetoID: ID! @index(name: "byProjeto")
+  Equipe: Equipe @belongsTo(fields: ["equipeID"])
+}
+
+type MaterialBoletim @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  boletimID: ID! @index(name: "byBoletim")
+  materialID: ID! @index(name: "byMaterial")
+  Quantidade: Float
+  Material: Material @belongsTo(fields: ["materialID"])
+}
+
+type FiscalBoletim @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  boletimID: ID! @index(name: "byBoletim")
+  equipeID: ID! @index(name: "byEquipe")
+  Equipe: Equipe @belongsTo(fields: ["equipeID"])
+}
+
+type AuxiliarBoletim @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  boletimID: ID! @index(name: "byBoletim")
+  equipeID: ID! @index(name: "byEquipe")
+  Equipe: Equipe @belongsTo(fields: ["equipeID"])
+}
+
+type OperadorBoletim @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  boletimID: ID! @index(name: "byBoletim")
+  equipeID: ID! @index(name: "byEquipe")
+  Equipe: Equipe @belongsTo(fields: ["equipeID"])
+}
+
+type SupervisorBoletim @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  boletimID: ID! @index(name: "byBoletim")
+  equipeID: ID! @index(name: "byEquipe")
+  Equipe: Equipe @belongsTo(fields: ["equipeID"])
+}
+
+type FuroBoletim @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  boletimID: ID! @index(name: "byBoletim")
+  furoID: ID! @index(name: "byFuro")
+  Furo: Furo @belongsTo(fields: ["furoID"])
+  Ativo: Boolean
+}
+
+type Boletim @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Data: AWSDate
+  alvoID: ID! @index(name: "byAlvo")
+  Alvo: Alvo @belongsTo(fields: ["alvoID"])
+  sondaID: ID! @index(name: "bySonda")
+  Sonda: Sonda @belongsTo(fields: ["sondaID"])
+  FurosBoletim: [FuroBoletim] @hasMany(indexName: "byBoletim", fields: ["id"])
+  Inclinacao: Float
+  Azimute: Float
+  turnoID: ID! @index(name: "byTurno")
+  Turno: Turno @belongsTo(fields: ["turnoID"])
+  HorimetroIncial: Float
+  HorimetroFinal: Float
+  SupervisoresBoletim: [SupervisorBoletim] @hasMany(indexName: "byBoletim", fields: ["id"])
+  OperadoresBoletim: [OperadorBoletim] @hasMany(indexName: "byBoletim", fields: ["id"])
+  AuxiliaresBoletim: [AuxiliarBoletim] @hasMany(indexName: "byBoletim", fields: ["id"])
+  FiscaisBoletim: [FiscalBoletim] @hasMany(indexName: "byBoletim", fields: ["id"])
+  MateriaisBoletim: [MaterialBoletim] @hasMany(indexName: "byBoletim", fields: ["id"])
+  AtividadeBoletims: [AtividadeBoletim] @hasMany(indexName: "byBoletim", fields: ["id"])
+}
+
+type Sonda @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  NomeSonda: String!
+  Ativo: Boolean!
+  Boletims: [Boletim] @hasMany(indexName: "bySonda", fields: ["id"])
+}
+
+type Material @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  NomeMaterial: String!
+  Unidade: String!
+  MateriaisBoletim: [MaterialBoletim] @hasMany(indexName: "byMaterial", fields: ["id"])
+}
+
+type Turno @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  NomeTurno: String!
+  Codigo: String!
+  Inicio: AWSTime!
+  Termino: AWSTime!
+  projetoID: ID! @index(name: "byProjeto")
+  Boletims: [Boletim] @hasMany(indexName: "byTurno", fields: ["id"])
+}
+
+type Furo @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  NomeFuro: String!
+  Status: String
+  FuroBoletims: [FuroBoletim] @hasMany(indexName: "byFuro", fields: ["id"])
+  FuroOrientado: Boolean!
+  alvoID: ID! @index(name: "byAlvo")
+  AtividadeBoletims: [AtividadeBoletim] @hasMany(indexName: "byFuro", fields: ["id"])
+}
+
+type Orientacao @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Codigo: Int!
+  Sigla: String!
+  Descricao: String
+  Ativo: Boolean!
+  AtividadeBoletims: [AtividadeBoletim] @hasMany(indexName: "byOrientacao", fields: ["id"])
+}
+
+type Atividade @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  NomeAtividade: String!
+  Codigo: Int!
+  Tipo: String!
+  Ativo: Boolean!
+  AtividadeBoletims: [AtividadeBoletim] @hasMany(indexName: "byAtividade", fields: ["id"])
+  InfoPerfuracao: Boolean
+}
+
+type Alvo @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  NomeAlvo: String!
+  projetoID: ID! @index(name: "byProjeto")
+  Boletims: [Boletim] @hasMany(indexName: "byAlvo", fields: ["id"])
+  Furos: [Furo] @hasMany(indexName: "byAlvo", fields: ["id"])
+  Projeto: Projeto @belongsTo(fields: ["projetoID"])
+}
+
+type Projeto @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  NomeProjeto: String!
+  clienteID: ID! @index(name: "byCliente")
+  Turnos: [Turno] @hasMany(indexName: "byProjeto", fields: ["id"])
+  Alvos: [Alvo] @hasMany(indexName: "byProjeto", fields: ["id"])
+  Cliente: Cliente @belongsTo(fields: ["clienteID"])
+  EquipeProjetos: [EquipeProjeto] @hasMany(indexName: "byProjeto", fields: ["id"])
+}
+
+type Cliente @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  NomeCliente: String!
+  Projetos: [Projeto] @hasMany(indexName: "byCliente", fields: ["id"])
+  LogoClient: String
+  Ativo: Boolean!
+  UsuarioCliente: [UsuarioCliente] @hasMany(indexName: "byCliente", fields: ["id"])
+}
+
+type Equipe @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Nome: String!
+  Funcao: String!
+  Ativo: Boolean!
+  AuxiliarBoletims: [AuxiliarBoletim] @hasMany(indexName: "byEquipe", fields: ["id"])
+  OperadorBoletis: [OperadorBoletim] @hasMany(indexName: "byEquipe", fields: ["id"])
+  SupervisorBoletim: [SupervisorBoletim] @hasMany(indexName: "byEquipe", fields: ["id"])
+  FiscalBoletims: [FiscalBoletim] @hasMany(indexName: "byEquipe", fields: ["id"])
+  EquipeProjetos: [EquipeProjeto] @hasMany(indexName: "byEquipe", fields: ["id"])
+}
+ 

@@ -104,6 +104,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "clienteID": {
+                    "name": "clienteID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "Cliente": {
                     "name": "Cliente",
                     "isArray": false,
@@ -114,7 +121,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "clienteID"
+                        "targetNames": [
+                            "clienteID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -300,6 +309,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "atividadeID": {
+                    "name": "atividadeID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Atividade": {
                     "name": "Atividade",
                     "isArray": false,
@@ -310,7 +326,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "atividadeID"
+                        "targetNames": [
+                            "atividadeID"
+                        ]
                     }
                 },
                 "boletimID": {
@@ -334,6 +352,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "furoID": {
+                    "name": "furoID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "Furo": {
                     "name": "Furo",
                     "isArray": false,
@@ -344,7 +369,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "furoID"
+                        "targetNames": [
+                            "furoID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -442,6 +469,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "equipeID": {
+                    "name": "equipeID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "projetoID": {
                     "name": "projetoID",
                     "isArray": false,
@@ -459,7 +493,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "equipeID"
+                        "targetNames": [
+                            "equipeID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -539,6 +575,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "materialID": {
+                    "name": "materialID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Quantidade": {
                     "name": "Quantidade",
                     "isArray": false,
@@ -556,7 +599,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "materialID"
+                        "targetNames": [
+                            "materialID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -636,6 +681,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "equipeID": {
+                    "name": "equipeID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Equipe": {
                     "name": "Equipe",
                     "isArray": false,
@@ -646,7 +698,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "equipeID"
+                        "targetNames": [
+                            "equipeID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -726,6 +780,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "equipeID": {
+                    "name": "equipeID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Equipe": {
                     "name": "Equipe",
                     "isArray": false,
@@ -736,7 +797,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "equipeID"
+                        "targetNames": [
+                            "equipeID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -816,6 +879,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "equipeID": {
+                    "name": "equipeID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Equipe": {
                     "name": "Equipe",
                     "isArray": false,
@@ -826,7 +896,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "equipeID"
+                        "targetNames": [
+                            "equipeID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -906,6 +978,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "equipeID": {
+                    "name": "equipeID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Equipe": {
                     "name": "Equipe",
                     "isArray": false,
@@ -916,7 +995,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "equipeID"
+                        "targetNames": [
+                            "equipeID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -996,6 +1077,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "furoID": {
+                    "name": "furoID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Furo": {
                     "name": "Furo",
                     "isArray": false,
@@ -1006,7 +1094,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "furoID"
+                        "targetNames": [
+                            "furoID"
+                        ]
                     }
                 },
                 "Ativo": {
@@ -1093,6 +1183,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "alvoID": {
+                    "name": "alvoID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Alvo": {
                     "name": "Alvo",
                     "isArray": false,
@@ -1103,8 +1200,17 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "alvoID"
+                        "targetNames": [
+                            "alvoID"
+                        ]
                     }
+                },
+                "sondaID": {
+                    "name": "sondaID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "Sonda": {
                     "name": "Sonda",
@@ -1116,7 +1222,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "sondaID"
+                        "targetNames": [
+                            "sondaID"
+                        ]
                     }
                 },
                 "FurosBoletim": {
@@ -1130,7 +1238,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "boletimID"
+                        "associatedWith": [
+                            "boletimID"
+                        ]
                     }
                 },
                 "Inclinacao": {
@@ -1147,6 +1257,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "turnoID": {
+                    "name": "turnoID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Turno": {
                     "name": "Turno",
                     "isArray": false,
@@ -1157,7 +1274,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "turnoID"
+                        "targetNames": [
+                            "turnoID"
+                        ]
                     }
                 },
                 "HorimetroIncial": {
@@ -1185,7 +1304,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "boletimID"
+                        "associatedWith": [
+                            "boletimID"
+                        ]
                     }
                 },
                 "OperadoresBoletim": {
@@ -1199,7 +1320,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "boletimID"
+                        "associatedWith": [
+                            "boletimID"
+                        ]
                     }
                 },
                 "AuxiliaresBoletim": {
@@ -1213,7 +1336,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "boletimID"
+                        "associatedWith": [
+                            "boletimID"
+                        ]
                     }
                 },
                 "FiscaisBoletim": {
@@ -1227,7 +1352,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "boletimID"
+                        "associatedWith": [
+                            "boletimID"
+                        ]
                     }
                 },
                 "MateriaisBoletim": {
@@ -1241,7 +1368,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "boletimID"
+                        "associatedWith": [
+                            "boletimID"
+                        ]
                     }
                 },
                 "AtividadeBoletims": {
@@ -1255,7 +1384,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "boletimID"
+                        "associatedWith": [
+                            "boletimID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -1362,7 +1493,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Sonda"
+                        "associatedWith": [
+                            "Sonda"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -1442,7 +1575,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Material"
+                        "associatedWith": [
+                            "Material"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -1543,7 +1678,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Turno"
+                        "associatedWith": [
+                            "Turno"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -1632,7 +1769,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Furo"
+                        "associatedWith": [
+                            "Furo"
+                        ]
                     }
                 },
                 "FuroOrientado": {
@@ -1660,7 +1799,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Furo"
+                        "associatedWith": [
+                            "Furo"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -1763,7 +1904,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "orientacaoID"
+                        "associatedWith": [
+                            "orientacaoID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -1857,7 +2000,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Atividade"
+                        "associatedWith": [
+                            "Atividade"
+                        ]
                     }
                 },
                 "InfoPerfuracao": {
@@ -1926,6 +2071,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "projetoID": {
+                    "name": "projetoID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Boletims": {
                     "name": "Boletims",
                     "isArray": true,
@@ -1937,7 +2089,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Alvo"
+                        "associatedWith": [
+                            "Alvo"
+                        ]
                     }
                 },
                 "Furos": {
@@ -1951,7 +2105,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "alvoID"
+                        "associatedWith": [
+                            "alvoID"
+                        ]
                     }
                 },
                 "Projeto": {
@@ -1964,7 +2120,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "projetoID"
+                        "targetNames": [
+                            "projetoID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -2035,6 +2193,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "clienteID": {
+                    "name": "clienteID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Turnos": {
                     "name": "Turnos",
                     "isArray": true,
@@ -2046,7 +2211,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "projetoID"
+                        "associatedWith": [
+                            "projetoID"
+                        ]
                     }
                 },
                 "Alvos": {
@@ -2060,7 +2227,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Projeto"
+                        "associatedWith": [
+                            "Projeto"
+                        ]
                     }
                 },
                 "Cliente": {
@@ -2073,7 +2242,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "clienteID"
+                        "targetNames": [
+                            "clienteID"
+                        ]
                     }
                 },
                 "EquipeProjetos": {
@@ -2087,7 +2258,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "projetoID"
+                        "associatedWith": [
+                            "projetoID"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -2169,7 +2342,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Cliente"
+                        "associatedWith": [
+                            "Cliente"
+                        ]
                     }
                 },
                 "LogoClient": {
@@ -2197,7 +2372,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Cliente"
+                        "associatedWith": [
+                            "Cliente"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -2284,7 +2461,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Equipe"
+                        "associatedWith": [
+                            "Equipe"
+                        ]
                     }
                 },
                 "OperadorBoletis": {
@@ -2298,7 +2477,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Equipe"
+                        "associatedWith": [
+                            "Equipe"
+                        ]
                     }
                 },
                 "SupervisorBoletim": {
@@ -2312,7 +2493,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Equipe"
+                        "associatedWith": [
+                            "Equipe"
+                        ]
                     }
                 },
                 "FiscalBoletims": {
@@ -2326,7 +2509,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Equipe"
+                        "associatedWith": [
+                            "Equipe"
+                        ]
                     }
                 },
                 "EquipeProjetos": {
@@ -2340,7 +2525,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Equipe"
+                        "associatedWith": [
+                            "Equipe"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -2389,5 +2576,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "5f6d241c3d74da124df9e5796c2c3fdd"
+    "version": "0149196620e0f5dfd66db232dbad225f"
 };
