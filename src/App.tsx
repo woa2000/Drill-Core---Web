@@ -24,6 +24,7 @@ import { Amplify, Auth, Hub } from 'aws-amplify'
 import { CognitoUserSession, CognitoAccessToken } from 'amazon-cognito-identity-js'
 import { HubCallback } from '@aws-amplify/core/lib/Hub'
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 import awsconfig from './aws-exports';
 
 import { Link } from 'react-router-dom';

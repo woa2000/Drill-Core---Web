@@ -4,10 +4,23 @@
  * Any changes to this file will be overwritten when running amplify pull. *
  **************************************************************************/
 
-import React from "react";
+import * as React from "react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
-import { FlexProps } from "@aws-amplify/ui-react";
+import { ButtonProps, FlexProps, ImageProps, TextProps } from "@aws-amplify/ui-react";
+import { MyIconProps } from "./MyIcon";
+export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
+export declare type ProfileAOverridesProps = {
+    ProfileA?: PrimitiveOverrideProps<FlexProps>;
+    image?: PrimitiveOverrideProps<ImageProps>;
+    Name?: PrimitiveOverrideProps<FlexProps>;
+    "Melinda Marcus"?: PrimitiveOverrideProps<TextProps>;
+    "Design Engineer at Cloth Studios"?: PrimitiveOverrideProps<TextProps>;
+    Followers?: PrimitiveOverrideProps<FlexProps>;
+    MyIcon?: MyIconProps;
+    "99 Followers"?: PrimitiveOverrideProps<TextProps>;
+    Button?: PrimitiveOverrideProps<ButtonProps>;
+} & EscapeHatchProps;
 export declare type ProfileAProps = React.PropsWithChildren<Partial<FlexProps> & {
-    overrides?: EscapeHatchProps | undefined | null;
+    overrides?: ProfileAOverridesProps | undefined | null;
 }>;
 export default function ProfileA(props: ProfileAProps): React.ReactElement;

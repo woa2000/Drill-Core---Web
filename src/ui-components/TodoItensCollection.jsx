@@ -5,7 +5,7 @@
  **************************************************************************/
 
 /* eslint-disable */
-import React from "react";
+import * as React from "react";
 import NewTodoItem from "./NewTodoItem";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Collection } from "@aws-amplify/ui-react";
@@ -17,8 +17,8 @@ export default function TodoItensCollection(props) {
       direction="column"
       justifyContent="stretch"
       items={items || []}
-      {...rest}
       {...getOverrideProps(overrides, "TodoItensCollection")}
+      {...rest}
     >
       {(item, index) => (
         <NewTodoItem

@@ -37,29 +37,34 @@ export async function getProjetos(): Promise<Projeto[]> {
 
 export async function getProjetosCliente(clienteID: string): Promise<Projeto[]> {
   const projetos =  await DataStore
-    .query(Projeto, x => x.clienteID('eq', clienteID) , { sort: s => s.createdAt(SortDirection.DESCENDING)});
+    .query(Projeto, x => x.Cliente.id.eq(clienteID) , { sort: s => s.createdAt(SortDirection.DESCENDING)});
     return projetos;
 }
 
 export async function salvarProjeto(nomeProjeto: string , clienteId: string) : Promise<ModelResult> {
   console.log('nomeProjeto ->', nomeProjeto);
   console.log('clienteID ->', clienteId);
+  
+  const client = await DataStore.query(Cliente, x => x.id.eq(clienteId));
+  console.log('cliente => ', client[0]);
 
-  // const cliente = await DataStore.query(Cliente,clienteId) as Cliente;
-  // console.log('cliente ->', cliente);
-
-  const saved =  await DataStore.save(new Projeto({ NomeProjeto: nomeProjeto, clienteID: clienteId }))
-  .then(() => { return { success: true} as ModelResult; })
-  .catch(() => { return {success : false} as ModelResult; });
+  var saved = {success : false} as ModelResult; 
+  if (client[0] != undefined)
+  {
+     saved =  await DataStore.save(new Projeto({ NomeProjeto: nomeProjeto, Cliente: client[0] }))
+    .then(() => { return { success: true} as ModelResult; })
+    .catch(() => { return {success : false} as ModelResult; });
+  }
 
   return saved;
 }
 
 export async function atualizarProjeto(updateProjeto : Projeto, original : Projeto) {
   //update the todo item with updateValue
+
   const saved = await DataStore.save(
       Projeto.copyOf(original, updated => {
-        updated.clienteID = updateProjeto.clienteID;
+        updateProjeto.Cliente.then(x => updated.Cliente = x);
         updated.NomeProjeto = updateProjeto.NomeProjeto;
       })
     )
@@ -79,16 +84,14 @@ export async function deleteProjeto(projeto: Projeto): Promise<ModelResult> {
 
 
 export async function duplicarProjeto(id: string, turno: boolean, equipe: boolean): Promise<ModelResult> {
-  console.log('entrada função - >', id, turno, equipe);
   const projeto = await DataStore.query(Projeto, id) as Projeto;
-  console.log('projeto funcao ->', projeto);
-  const clienteID = projeto.Cliente?.id as string;
-  console.log('clienteID ->', clienteID);
+  var cliente = null;
+  projeto.Cliente.then(x => cliente = x);
 
-  const novoProjeto = await DataStore.save(new Projeto({ NomeProjeto: 'Cópia_' + projeto.NomeProjeto , clienteID: clienteID }))
+  const novoProjeto = await DataStore.save(new Projeto({ NomeProjeto: 'Cópia_' + projeto.NomeProjeto , Cliente: cliente }))
   .then(async (data) => { 
     if(turno){
-      const turnos = await DataStore.query(Turno, x => x.projetoID('eq', projeto.id))
+      const turnos = await DataStore.query(Turno, x => x.projetoID.eq(projeto.id))
       .then(async (turnos) => {
           console.log('turnos função ->', turnos);
           turnos.map(async (turno) => {
@@ -97,12 +100,13 @@ export async function duplicarProjeto(id: string, turno: boolean, equipe: boolea
       })
     }
     if(equipe){
-      const membros = await DataStore.query(EquipeProjeto, x => x.projetoID('eq', projeto.id))
+      const membros = await DataStore.query(EquipeProjeto, x => x.projetoID.eq(projeto.id))
       .then(async (membros) => {
           console.log('membros função ->', membros);
           membros.map(async (membro) => {
-            const equipeID = membro.Equipe?.id as string;
-            const membersaved = await DataStore.save(new EquipeProjeto({ equipeID: equipeID , projetoID: data.id, Ativo: true }))
+            var equipe = null;
+            membro.Equipe.then(x => equipe = x);
+            const membersaved = await DataStore.save(new EquipeProjeto({ Equipe: equipe , projetoID: data.id, Ativo: true }))
             .then((data) => {console.log('equipe salva', data)})
             .catch((e) => {console.log('erro ao salvar equipe', e)})
 
@@ -122,16 +126,24 @@ export async function duplicarProjeto(id: string, turno: boolean, equipe: boolea
 
 export async function getAlvos(projetoID: string): Promise<Alvo[]> {
   const alvos =  await DataStore
-    .query(Alvo, Predicates.ALL, { sort: s => s.createdAt(SortDirection.DESCENDING)});
-    
-  return alvos.filter(x => x.Projeto?.id === projetoID);
+    .query(Alvo,Predicates.ALL, { sort: s => s.createdAt(SortDirection.DESCENDING)});
+  
+  console.log("alvos => ", alvos);  
+  return alvos.filter(x => x.projetoID === projetoID);
 }
 
 export async function salvarAlvo(nomeAlvo: string, projetoID: string ) : Promise<ModelResult> {
   
-  const saved =  await DataStore.save(new Alvo({ NomeAlvo: nomeAlvo, projetoID: projetoID }))
-  .then(() => { return { success: true} as ModelResult; })
-  .catch(() => { return {success : false} as ModelResult; });
+  const projeto = await DataStore.query(Projeto, x => x.id.eq(projetoID));
+  console.log("ProjetoID => ", projetoID);
+  console.log("Projeto => ", projeto[0]);
+  var saved =  {success : false} as ModelResult; 
+  if (projeto[0] != undefined)
+  {
+     saved =  await DataStore.save(new Alvo({ NomeAlvo: nomeAlvo, Projeto: projeto[0]}))
+    .then(() => { return { success: true} as ModelResult; })
+    .catch(() => { return {success : false} as ModelResult; });
+  }
 
   return saved;
 }
@@ -162,7 +174,7 @@ export async function deleteAlvo(alvo: Alvo): Promise<ModelResult> {
 
 export async function getTurnos(projetoID: string): Promise<Turno[]> {
   const turnos =  await DataStore
-    .query(Turno, x => x.projetoID('eq',projetoID), { sort: s => s.createdAt(SortDirection.DESCENDING)});
+    .query(Turno, x => x.projetoID.eq(projetoID), { sort: s => s.createdAt(SortDirection.DESCENDING)});
     return turnos;
 }
 
@@ -206,7 +218,7 @@ export async function deleteTurno(turno: Turno): Promise<ModelResult> {
 // Furos
 export async function getFuros(alvoID: string): Promise<Furo[]> {
   const furos =  await DataStore
-    .query(Furo, x => x.alvoID('eq',alvoID), { sort: s => s.createdAt(SortDirection.DESCENDING)});
+    .query(Furo, x => x.alvoID.eq(alvoID), { sort: s => s.createdAt(SortDirection.DESCENDING)});
     return furos;
 }
 
@@ -262,13 +274,32 @@ export async function updateFuro(updateObject : Furo, original : Furo) {
 
 export async function getEquipeProjeto(projetoID: string): Promise<EquipeProjeto[]> {
   const equipeProjeto =  await DataStore
-    .query(EquipeProjeto, x => x.projetoID('eq',projetoID), { sort: s => s.createdAt(SortDirection.DESCENDING)});
-    return equipeProjeto;
+    .query(EquipeProjeto, x => x.projetoID.eq(projetoID), { sort: s => s.createdAt(SortDirection.DESCENDING)});
+    
+  console.log("equipe => ", equipeProjeto);
+  
+  return equipeProjeto;
 }
+
+export async function  salvarEquipeProjetoUnico(membroID:string , projetoID:string){ 
+  console.log("membro => ", membroID);
+  console.log("projeto => ", projetoID);
+  const equipe = await DataStore.query(Equipe, x => x.id.eq(membroID));
+  var saved =  {success : false} as ModelResult;
+  if (saved != undefined)
+  {
+      saved = await DataStore.save(new EquipeProjeto({ Equipe: equipe[0], projetoID: projetoID, Ativo: true }))
+        .then(() => { return { success: true} as ModelResult; })
+        .catch(() => { return {success : false} as ModelResult; });
+  }
+  
+  return saved;
+};
 
 async function  loopsave(membros:Array<string> , projetoID:string){ 
   membros.map(async (membro) => {
-    await DataStore.save(new EquipeProjeto({ equipeID: membro, projetoID: projetoID, Ativo: true }))
+    const equipe = await DataStore.query(Equipe, x => x.id.eq(membro));
+    await DataStore.save(new EquipeProjeto({ Equipe: equipe[0], projetoID: projetoID, Ativo: true }))
   })
 };
 

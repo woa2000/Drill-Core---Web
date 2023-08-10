@@ -12,6 +12,8 @@ import './styles.css';
 import * as clienteServices from '../../services/clienteServices';
 import { Cliente } from '../../models';
 
+import * as XLSX from 'xlsx';
+
 const { Option } = Select;
 
 const ModalNovoCliente = ({modal_novo, setmodal_novo}) => {
@@ -388,6 +390,28 @@ function ClientePage() {
 
   const [cliente, setCliente] = useState({});
   
+  //create a function to import the data from excel file  and save it in the database 
+  const importarCliente = async (file) => {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = (e) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, {
+        type: 'binary',
+      });
+      const first_sheet_name = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[first_sheet_name];
+      const data_json = XLSX.utils.sheet_to_json(worksheet);
+      data_json.forEach(async (element) => {
+        console.log('linha => ',element.Nome, 'Cargo => ', element.Cargo)
+        const response =  await clienteServices.salvarCliente(element.NomeCliente, element.LogoCliente);
+        console.log('response => ',response)
+
+      });
+    };
+    reader.readAsBinaryString(file);
+  }
 
   useEffect(() => {
     const subscription = DataStore.observeQuery(Cliente).subscribe((snapshot) => {
@@ -420,6 +444,13 @@ function ClientePage() {
               setmodal_novo(true)
             }}
         >Novo Cliente</Button>
+        {/* <input
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            importarCliente(file);
+          }}
+        /> */}
       </div>
 
       <ListaClientes

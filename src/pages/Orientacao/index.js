@@ -12,6 +12,8 @@ import {DataStore} from 'aws-amplify';
 import './styles.css'
 import { Orientacao } from '../../models';
 
+import * as XLSX from 'xlsx';
+
 const { Option } = Select;
 
 function ListaObjetos({objetos, titulo, titulo_botao}) {
@@ -28,8 +30,8 @@ function ListaObjetos({objetos, titulo, titulo_botao}) {
     const ModalNovaObjeto = ({modal_novo, setmodal_novo, titulo}) => {
         const [form] = Form.useForm();
       
-        const salvarObjeto = async (sigla, codigo) => {
-          const response = await orientacaoServices.save(sigla, parseInt(codigo));
+        const salvarObjeto = async (form) => {
+          const response = await orientacaoServices.save(form);
           if(response.success === true)
           {
             message.success('Orientação adicionada com sucesso!');
@@ -44,7 +46,6 @@ function ListaObjetos({objetos, titulo, titulo_botao}) {
           if (form.getFieldValue('Sigla') != "") 
           {
             console.log('submmit ->',form.getFieldsValue());
-            //salvarObjeto(form.getFieldValue('Sigla'), form.getFieldValue('Codigo'), form.getFieldValue('Descricao')).then(() => {
             salvarObjeto(form.getFieldsValue('')).then(() => {
               tog_novo()
             })
@@ -383,6 +384,28 @@ function ListaObjetos({objetos, titulo, titulo_botao}) {
         },
     ];
 
+    //create a function to import the data from excel file  and save it in the database 
+    const importarOrientacao = async (file) => {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+
+      reader.onload = (e) => {
+        const data = e.target.result;
+        const workbook = XLSX.read(data, {
+          type: 'binary',
+        });
+        const first_sheet_name = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[first_sheet_name];
+        const data_json = XLSX.utils.sheet_to_json(worksheet);
+        data_json.forEach(async (element) => {
+          const response = await orientacaoServices.save(new Orientacao({Codigo : element.Codigo, Sigla : element.Sigla, Descricao : element.Descricao })); 
+          console.log('response => ',response)
+
+        });
+      };
+      reader.readAsBinaryString(file);
+    }
+
     return(
         <div>
             <div className='title'>
@@ -393,6 +416,13 @@ function ListaObjetos({objetos, titulo, titulo_botao}) {
                     setmodal_novo(true)
                     }}
                 >{titulo_botao}</Button>
+                {/* <input
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    importarOrientacao(file);
+                  }}
+                /> */}
             </div>
             <Table columns={columns} dataSource={objetos} onChange={onChange} key='tableAlvo'/>
             <ModalNovaObjeto 

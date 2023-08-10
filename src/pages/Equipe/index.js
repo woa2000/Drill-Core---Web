@@ -467,6 +467,7 @@ function EquipePage() {
   }, [])
 
   const getEquipes = async () => {
+    console.log("getEquipes => ")
     const response = await equipeServices.getMembros();
     setEquipe(response);
   }

@@ -5,7 +5,7 @@
  **************************************************************************/
 
 /* eslint-disable */
-import React from "react";
+import * as React from "react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Badge, Flex, Text, View } from "@aws-amplify/ui-react";
 export default function CardE(props) {
@@ -20,8 +20,8 @@ export default function CardE(props) {
       position="relative"
       padding="16px 16px 16px 16px"
       backgroundColor="rgba(255,255,255,1)"
-      {...rest}
       {...getOverrideProps(overrides, "CardE")}
+      {...rest}
     >
       <View
         width="288px"

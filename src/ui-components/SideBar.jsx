@@ -5,7 +5,7 @@
  **************************************************************************/
 
 /* eslint-disable */
-import React from "react";
+import * as React from "react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Divider, Flex, Icon, Text, View } from "@aws-amplify/ui-react";
 export default function SideBar(props) {
@@ -20,8 +20,8 @@ export default function SideBar(props) {
       position="relative"
       padding="32px 0px 32px 0px"
       backgroundColor="rgba(255,255,255,1)"
-      {...rest}
       {...getOverrideProps(overrides, "SideBar")}
+      {...rest}
     >
       <Flex
         gap="32px"

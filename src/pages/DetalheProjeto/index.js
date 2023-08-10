@@ -18,6 +18,8 @@ import SelectEquipe from '../../components/SelectEquipe';
 import { EquipeProjeto } from '../../models';
 import { Furo } from '../../models';
 
+import * as XLSX from 'xlsx';
+
 const { TabPane } = Tabs;
 const {Option} = Select;
 const format = 'HH:mm';
@@ -1439,6 +1441,7 @@ function DetalheProjetoPage() {
   }, [])
 
   const getAlvos = async (projetoID) => {
+    console.log("getAlvos => ", projetoID);
     const response = await projetoServices.getAlvos(projetoID);
     setAlvos(response);
     console.log('alvos ->', response)
@@ -1460,6 +1463,72 @@ function DetalheProjetoPage() {
     setModal(true);
   }
 
+  //create a function to import the data from excel file  and save it in the database 
+  const importarAlvos = async (file) => {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = (e) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, {
+        type: 'binary',
+      });
+      const first_sheet_name = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[first_sheet_name];
+      const data_json = XLSX.utils.sheet_to_json(worksheet);
+      data_json.forEach(async (element) => {
+        console.log("1 => ", element.NomeAlvo);
+        console.log("2 => ", element.projetoID);
+        const response =  await  await projetoServices.salvarAlvo(element.NomeAlvo, element.projetoID);
+        console.log('response => ',response)
+
+      });
+    };
+    reader.readAsBinaryString(file);
+  }
+
+  const importarTurnos = async (file) => {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = (e) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, {
+        type: 'binary',
+      });
+      const first_sheet_name = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[first_sheet_name];
+      const data_json = XLSX.utils.sheet_to_json(worksheet);
+      data_json.forEach(async (element) => {
+        const response =  await  await projetoServices.salvarTurno(element.NomeTurno, element.Codigo, element.Inicio, element.Termino, element.projetoID);
+        console.log('response => ',response)
+
+      });
+    };
+    reader.readAsBinaryString(file);
+  }
+
+  const importarEquipe = async (file) => {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = (e) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, {
+        type: 'binary',
+      });
+      const first_sheet_name = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[first_sheet_name];
+      const data_json = XLSX.utils.sheet_to_json(worksheet);
+      data_json.forEach(async (element) => {
+        const response = await projetoServices.salvarEquipeProjetoUnico(element.equipeID, element.projetoID);
+
+        console.log('response => ',response)
+      });
+    };
+    reader.readAsBinaryString(file);
+  }
+
   return (
     <div>
         <div className='title'>
@@ -1472,6 +1541,13 @@ function DetalheProjetoPage() {
             >
                 Duplicar Projeto
             </Button>
+            {/* <input
+              type="file"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                importarEquipe(file);
+              }}
+            /> */}
         </div>
         <ModalDuplicar 
           projetoId={data.id} 

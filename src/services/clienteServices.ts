@@ -33,7 +33,7 @@ export async function getClientes(): Promise<Cliente[]> {
 
 export async function getClientesAtivos(): Promise<Cliente[]> {
   const clientes =  await DataStore
-    .query(Cliente, x => x.Ativo('eq', true), { sort: s => s.NomeCliente(SortDirection.ASCENDING)});
+    .query(Cliente, x => x.Ativo.eq(true), { sort: s => s.NomeCliente(SortDirection.ASCENDING)});
 
    return clientes;
 }

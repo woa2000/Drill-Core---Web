@@ -5,7 +5,7 @@
  **************************************************************************/
 
 /* eslint-disable */
-import React from "react";
+import * as React from "react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Flex, SwitchField, Text } from "@aws-amplify/ui-react";
 export default function TodoItem(props) {
@@ -18,8 +18,8 @@ export default function TodoItem(props) {
       height="158px"
       position="relative"
       padding="0px 0px 0px 0px"
-      {...rest}
       {...getOverrideProps(overrides, "TodoItem")}
+      {...rest}
     >
       <Flex
         gap="0"

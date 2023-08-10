@@ -5,7 +5,7 @@
  **************************************************************************/
 
 /* eslint-disable */
-import React from "react";
+import * as React from "react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Button, Flex, Image, Text } from "@aws-amplify/ui-react";
 import MyIcon from "./MyIcon";
@@ -20,8 +20,8 @@ export default function ProfileA(props) {
       position="relative"
       padding="24px 24px 24px 24px"
       backgroundColor="rgba(255,255,255,1)"
-      {...rest}
       {...getOverrideProps(overrides, "ProfileA")}
+      {...rest}
     >
       <Image
         width="160px"

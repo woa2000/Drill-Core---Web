@@ -12,6 +12,8 @@ import {DataStore} from 'aws-amplify';
 import './styles.css'
 import { Atividade } from '../../models';
 
+import * as XLSX from 'xlsx';
+
 const { Option } = Select;
 
 function ListaAtividades({atividades}){
@@ -416,6 +418,28 @@ function ListaAtividades({atividades}){
         },
     ];
 
+    //create a function to import the data from excel file  and save it in the database 
+  const importarAtividade = async (file) => {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = (e) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, {
+        type: 'binary',
+      });
+      const first_sheet_name = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[first_sheet_name];
+      const data_json = XLSX.utils.sheet_to_json(worksheet);
+      data_json.forEach(async (element) => {
+        const response =  await atividadeServices.salvarAtividade(element.NomeAtividade, parseInt(element.Codigo), element.Tipo);
+        console.log('response => ',response)
+
+      });
+    };
+    reader.readAsBinaryString(file);
+  }
+
     return(
         <div>
             <div className='title'>
@@ -426,6 +450,13 @@ function ListaAtividades({atividades}){
                     setmodal_novo(true)
                     }}
                 >Nova Atividade</Button>
+                {/* <input
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    importarAtividade(file);
+                  }}
+                /> */}
             </div>
             <Table columns={columns} dataSource={atividades} onChange={onChange} key='tableAlvo'/>
             <ModalNovaAtividade 

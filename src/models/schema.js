@@ -168,8 +168,8 @@ export const schema = {
                 }
             ]
         },
-        "Cliente": {
-            "name": "Cliente",
+        "Consistencia": {
+            "name": "Consistencia",
             "fields": {
                 "id": {
                     "name": "id",
@@ -178,54 +178,12 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "NomeCliente": {
-                    "name": "NomeCliente",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Projetos": {
-                    "name": "Projetos",
-                    "isArray": true,
-                    "type": {
-                        "model": "Projeto"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "Cliente"
-                    }
-                },
-                "LogoClient": {
-                    "name": "LogoClient",
+                "TipoSolo": {
+                    "name": "TipoSolo",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
-                },
-                "Ativo": {
-                    "name": "Ativo",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "UsuarioCliente": {
-                    "name": "UsuarioCliente",
-                    "isArray": true,
-                    "type": {
-                        "model": "UsuarioCliente"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "Cliente"
-                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -245,7 +203,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Clientes",
+            "pluralName": "Consistencias",
             "attributes": [
                 {
                     "type": "model",
@@ -269,8 +227,8 @@ export const schema = {
                 }
             ]
         },
-        "Projeto": {
-            "name": "Projeto",
+        "AtividadeBoletim": {
+            "name": "AtividadeBoletim",
             "fields": {
                 "id": {
                     "name": "id",
@@ -279,66 +237,114 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "NomeProjeto": {
-                    "name": "NomeProjeto",
+                "Inicio": {
+                    "name": "Inicio",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
+                    "type": "AWSTime",
+                    "isRequired": false,
                     "attributes": []
                 },
-                "Turnos": {
-                    "name": "Turnos",
-                    "isArray": true,
-                    "type": {
-                        "model": "Turno"
-                    },
+                "Termino": {
+                    "name": "Termino",
+                    "isArray": false,
+                    "type": "AWSTime",
                     "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "projetoID"
-                    }
+                    "attributes": []
                 },
-                "Alvos": {
-                    "name": "Alvos",
-                    "isArray": true,
-                    "type": {
-                        "model": "Alvo"
-                    },
+                "De": {
+                    "name": "De",
+                    "isArray": false,
+                    "type": "Float",
                     "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "Projeto"
-                    }
+                    "attributes": []
                 },
-                "Cliente": {
-                    "name": "Cliente",
+                "Ate": {
+                    "name": "Ate",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Recuperacao": {
+                    "name": "Recuperacao",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Caixa": {
+                    "name": "Caixa",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Diametro": {
+                    "name": "Diametro",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "CodigoOrientacao": {
+                    "name": "CodigoOrientacao",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Observacao": {
+                    "name": "Observacao",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Atividade": {
+                    "name": "Atividade",
                     "isArray": false,
                     "type": {
-                        "model": "Cliente"
+                        "model": "Atividade"
                     },
                     "isRequired": false,
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "clienteID"
+                        "targetName": "atividadeID"
                     }
                 },
-                "EquipeProjetos": {
-                    "name": "EquipeProjetos",
-                    "isArray": true,
+                "boletimID": {
+                    "name": "boletimID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "orientacaoID": {
+                    "name": "orientacaoID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Consistencia": {
+                    "name": "Consistencia",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Furo": {
+                    "name": "Furo",
+                    "isArray": false,
                     "type": {
-                        "model": "EquipeProjeto"
+                        "model": "Furo"
                     },
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true,
                     "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "projetoID"
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "furoID"
                     }
                 },
                 "createdAt": {
@@ -359,7 +365,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Projetos",
+            "pluralName": "AtividadeBoletims",
             "attributes": [
                 {
                     "type": "model",
@@ -368,9 +374,36 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byCliente",
+                        "name": "byAtividade",
                         "fields": [
-                            "clienteID"
+                            "atividadeID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byBoletim",
+                        "fields": [
+                            "boletimID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byOrientacao",
+                        "fields": [
+                            "orientacaoID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byFuro",
+                        "fields": [
+                            "furoID"
                         ]
                     }
                 },
@@ -392,8 +425,8 @@ export const schema = {
                 }
             ]
         },
-        "Turno": {
-            "name": "Turno",
+        "EquipeProjeto": {
+            "name": "EquipeProjeto",
             "fields": {
                 "id": {
                     "name": "id",
@@ -402,31 +435,10 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "NomeTurno": {
-                    "name": "NomeTurno",
+                "Ativo": {
+                    "name": "Ativo",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Codigo": {
-                    "name": "Codigo",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Inicio": {
-                    "name": "Inicio",
-                    "isArray": false,
-                    "type": "AWSTime",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Termino": {
-                    "name": "Termino",
-                    "isArray": false,
-                    "type": "AWSTime",
+                    "type": "Boolean",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -437,18 +449,17 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "Boletims": {
-                    "name": "Boletims",
-                    "isArray": true,
+                "Equipe": {
+                    "name": "Equipe",
+                    "isArray": false,
                     "type": {
-                        "model": "Boletim"
+                        "model": "Equipe"
                     },
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true,
                     "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "Turno"
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "equipeID"
                     }
                 },
                 "createdAt": {
@@ -469,7 +480,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Turnos",
+            "pluralName": "EquipeProjetos",
             "attributes": [
                 {
                     "type": "model",
@@ -478,9 +489,572 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
+                        "name": "byEquipe",
+                        "fields": [
+                            "equipeID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
                         "name": "byProjeto",
                         "fields": [
                             "projetoID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "MaterialBoletim": {
+            "name": "MaterialBoletim",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "boletimID": {
+                    "name": "boletimID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Quantidade": {
+                    "name": "Quantidade",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Material": {
+                    "name": "Material",
+                    "isArray": false,
+                    "type": {
+                        "model": "Material"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "materialID"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "MaterialBoletims",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byBoletim",
+                        "fields": [
+                            "boletimID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byMaterial",
+                        "fields": [
+                            "materialID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "FiscalBoletim": {
+            "name": "FiscalBoletim",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "boletimID": {
+                    "name": "boletimID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Equipe": {
+                    "name": "Equipe",
+                    "isArray": false,
+                    "type": {
+                        "model": "Equipe"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "equipeID"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "FiscalBoletims",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byBoletim",
+                        "fields": [
+                            "boletimID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byEquipe",
+                        "fields": [
+                            "equipeID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "AuxiliarBoletim": {
+            "name": "AuxiliarBoletim",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "boletimID": {
+                    "name": "boletimID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Equipe": {
+                    "name": "Equipe",
+                    "isArray": false,
+                    "type": {
+                        "model": "Equipe"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "equipeID"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "AuxiliarBoletims",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byBoletim",
+                        "fields": [
+                            "boletimID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byEquipe",
+                        "fields": [
+                            "equipeID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "OperadorBoletim": {
+            "name": "OperadorBoletim",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "boletimID": {
+                    "name": "boletimID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Equipe": {
+                    "name": "Equipe",
+                    "isArray": false,
+                    "type": {
+                        "model": "Equipe"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "equipeID"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "OperadorBoletims",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byBoletim",
+                        "fields": [
+                            "boletimID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byEquipe",
+                        "fields": [
+                            "equipeID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "SupervisorBoletim": {
+            "name": "SupervisorBoletim",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "boletimID": {
+                    "name": "boletimID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Equipe": {
+                    "name": "Equipe",
+                    "isArray": false,
+                    "type": {
+                        "model": "Equipe"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "equipeID"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "SupervisorBoletims",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byBoletim",
+                        "fields": [
+                            "boletimID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byEquipe",
+                        "fields": [
+                            "equipeID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "FuroBoletim": {
+            "name": "FuroBoletim",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "boletimID": {
+                    "name": "boletimID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Furo": {
+                    "name": "Furo",
+                    "isArray": false,
+                    "type": {
+                        "model": "Furo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "furoID"
+                    }
+                },
+                "Ativo": {
+                    "name": "Ativo",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "FuroBoletims",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byBoletim",
+                        "fields": [
+                            "boletimID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byFuro",
+                        "fields": [
+                            "furoID"
                         ]
                     }
                 },
@@ -753,8 +1327,8 @@ export const schema = {
                 }
             ]
         },
-        "Alvo": {
-            "name": "Alvo",
+        "Sonda": {
+            "name": "Sonda",
             "fields": {
                 "id": {
                     "name": "id",
@@ -763,10 +1337,17 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "NomeAlvo": {
-                    "name": "NomeAlvo",
+                "NomeSonda": {
+                    "name": "NomeSonda",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Ativo": {
+                    "name": "Ativo",
+                    "isArray": false,
+                    "type": "Boolean",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -781,34 +1362,7 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Alvo"
-                    }
-                },
-                "Furos": {
-                    "name": "Furos",
-                    "isArray": true,
-                    "type": {
-                        "model": "Furo"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "alvoID"
-                    }
-                },
-                "Projeto": {
-                    "name": "Projeto",
-                    "isArray": false,
-                    "type": {
-                        "model": "Projeto"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "projetoID"
+                        "associatedWith": "Sonda"
                     }
                 },
                 "createdAt": {
@@ -829,7 +1383,188 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Alvos",
+            "pluralName": "Sondas",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Material": {
+            "name": "Material",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "NomeMaterial": {
+                    "name": "NomeMaterial",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Unidade": {
+                    "name": "Unidade",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "MateriaisBoletim": {
+                    "name": "MateriaisBoletim",
+                    "isArray": true,
+                    "type": {
+                        "model": "MaterialBoletim"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "Material"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Materials",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Turno": {
+            "name": "Turno",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "NomeTurno": {
+                    "name": "NomeTurno",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Codigo": {
+                    "name": "Codigo",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Inicio": {
+                    "name": "Inicio",
+                    "isArray": false,
+                    "type": "AWSTime",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Termino": {
+                    "name": "Termino",
+                    "isArray": false,
+                    "type": "AWSTime",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "projetoID": {
+                    "name": "projetoID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Boletims": {
+                    "name": "Boletims",
+                    "isArray": true,
+                    "type": {
+                        "model": "Boletim"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "Turno"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Turnos",
             "attributes": [
                 {
                     "type": "model",
@@ -979,8 +1714,8 @@ export const schema = {
                 }
             ]
         },
-        "FuroBoletim": {
-            "name": "FuroBoletim",
+        "Orientacao": {
+            "name": "Orientacao",
             "fields": {
                 "id": {
                     "name": "id",
@@ -989,211 +1724,46 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "boletimID": {
-                    "name": "boletimID",
+                "Codigo": {
+                    "name": "Codigo",
                     "isArray": false,
-                    "type": "ID",
+                    "type": "Int",
                     "isRequired": true,
                     "attributes": []
                 },
-                "Furo": {
-                    "name": "Furo",
+                "Sigla": {
+                    "name": "Sigla",
                     "isArray": false,
-                    "type": {
-                        "model": "Furo"
-                    },
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Descricao": {
+                    "name": "Descricao",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "furoID"
-                    }
+                    "attributes": []
                 },
                 "Ativo": {
                     "name": "Ativo",
                     "isArray": false,
                     "type": "Boolean",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "FuroBoletims",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byBoletim",
-                        "fields": [
-                            "boletimID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byFuro",
-                        "fields": [
-                            "furoID"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "AtividadeBoletim": {
-            "name": "AtividadeBoletim",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
                     "isRequired": true,
                     "attributes": []
                 },
-                "Inicio": {
-                    "name": "Inicio",
-                    "isArray": false,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Termino": {
-                    "name": "Termino",
-                    "isArray": false,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "De": {
-                    "name": "De",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Ate": {
-                    "name": "Ate",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Recuperacao": {
-                    "name": "Recuperacao",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Caixa": {
-                    "name": "Caixa",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Diametro": {
-                    "name": "Diametro",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "CodigoOrientacao": {
-                    "name": "CodigoOrientacao",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Observacao": {
-                    "name": "Observacao",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Atividade": {
-                    "name": "Atividade",
-                    "isArray": false,
+                "AtividadeBoletims": {
+                    "name": "AtividadeBoletims",
+                    "isArray": true,
                     "type": {
-                        "model": "Atividade"
+                        "model": "AtividadeBoletim"
                     },
                     "isRequired": false,
                     "attributes": [],
+                    "isArrayNullable": true,
                     "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "atividadeID"
-                    }
-                },
-                "boletimID": {
-                    "name": "boletimID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "orientacaoID": {
-                    "name": "orientacaoID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Consistencia": {
-                    "name": "Consistencia",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Furo": {
-                    "name": "Furo",
-                    "isArray": false,
-                    "type": {
-                        "model": "Furo"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "furoID"
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "orientacaoID"
                     }
                 },
                 "createdAt": {
@@ -1214,47 +1784,11 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "AtividadeBoletims",
+            "pluralName": "Orientacaos",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byAtividade",
-                        "fields": [
-                            "atividadeID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byBoletim",
-                        "fields": [
-                            "boletimID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byOrientacao",
-                        "fields": [
-                            "orientacaoID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byFuro",
-                        "fields": [
-                            "furoID"
-                        ]
-                    }
                 },
                 {
                     "type": "auth",
@@ -1375,8 +1909,8 @@ export const schema = {
                 }
             ]
         },
-        "Sonda": {
-            "name": "Sonda",
+        "Alvo": {
+            "name": "Alvo",
             "fields": {
                 "id": {
                     "name": "id",
@@ -1385,17 +1919,10 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "NomeSonda": {
-                    "name": "NomeSonda",
+                "NomeAlvo": {
+                    "name": "NomeAlvo",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Ativo": {
-                    "name": "Ativo",
-                    "isArray": false,
-                    "type": "Boolean",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -1410,7 +1937,34 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "Sonda"
+                        "associatedWith": "Alvo"
+                    }
+                },
+                "Furos": {
+                    "name": "Furos",
+                    "isArray": true,
+                    "type": {
+                        "model": "Furo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "alvoID"
+                    }
+                },
+                "Projeto": {
+                    "name": "Projeto",
+                    "isArray": false,
+                    "type": {
+                        "model": "Projeto"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "projetoID"
                     }
                 },
                 "createdAt": {
@@ -1431,11 +1985,20 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Sondas",
+            "pluralName": "Alvos",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byProjeto",
+                        "fields": [
+                            "projetoID"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -1455,8 +2018,8 @@ export const schema = {
                 }
             ]
         },
-        "SupervisorBoletim": {
-            "name": "SupervisorBoletim",
+        "Projeto": {
+            "name": "Projeto",
             "fields": {
                 "id": {
                     "name": "id",
@@ -1465,24 +2028,66 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "boletimID": {
-                    "name": "boletimID",
+                "NomeProjeto": {
+                    "name": "NomeProjeto",
                     "isArray": false,
-                    "type": "ID",
+                    "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
-                "Equipe": {
-                    "name": "Equipe",
+                "Turnos": {
+                    "name": "Turnos",
+                    "isArray": true,
+                    "type": {
+                        "model": "Turno"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "projetoID"
+                    }
+                },
+                "Alvos": {
+                    "name": "Alvos",
+                    "isArray": true,
+                    "type": {
+                        "model": "Alvo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "Projeto"
+                    }
+                },
+                "Cliente": {
+                    "name": "Cliente",
                     "isArray": false,
                     "type": {
-                        "model": "Equipe"
+                        "model": "Cliente"
                     },
                     "isRequired": false,
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "equipeID"
+                        "targetName": "clienteID"
+                    }
+                },
+                "EquipeProjetos": {
+                    "name": "EquipeProjetos",
+                    "isArray": true,
+                    "type": {
+                        "model": "EquipeProjeto"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "projetoID"
                     }
                 },
                 "createdAt": {
@@ -1503,7 +2108,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "SupervisorBoletims",
+            "pluralName": "Projetos",
             "attributes": [
                 {
                     "type": "model",
@@ -1512,20 +2117,112 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byBoletim",
+                        "name": "byCliente",
                         "fields": [
-                            "boletimID"
+                            "clienteID"
                         ]
                     }
                 },
                 {
-                    "type": "key",
+                    "type": "auth",
                     "properties": {
-                        "name": "byEquipe",
-                        "fields": [
-                            "equipeID"
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
                         ]
                     }
+                }
+            ]
+        },
+        "Cliente": {
+            "name": "Cliente",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "NomeCliente": {
+                    "name": "NomeCliente",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Projetos": {
+                    "name": "Projetos",
+                    "isArray": true,
+                    "type": {
+                        "model": "Projeto"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "Cliente"
+                    }
+                },
+                "LogoClient": {
+                    "name": "LogoClient",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Ativo": {
+                    "name": "Ativo",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "UsuarioCliente": {
+                    "name": "UsuarioCliente",
+                    "isArray": true,
+                    "type": {
+                        "model": "UsuarioCliente"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "Cliente"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Clientes",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
                 },
                 {
                     "type": "auth",
@@ -1687,706 +2384,10 @@ export const schema = {
                     }
                 }
             ]
-        },
-        "AuxiliarBoletim": {
-            "name": "AuxiliarBoletim",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "boletimID": {
-                    "name": "boletimID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Equipe": {
-                    "name": "Equipe",
-                    "isArray": false,
-                    "type": {
-                        "model": "Equipe"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "equipeID"
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "AuxiliarBoletims",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byBoletim",
-                        "fields": [
-                            "boletimID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byEquipe",
-                        "fields": [
-                            "equipeID"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "OperadorBoletim": {
-            "name": "OperadorBoletim",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "boletimID": {
-                    "name": "boletimID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Equipe": {
-                    "name": "Equipe",
-                    "isArray": false,
-                    "type": {
-                        "model": "Equipe"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "equipeID"
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "OperadorBoletims",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byBoletim",
-                        "fields": [
-                            "boletimID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byEquipe",
-                        "fields": [
-                            "equipeID"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "FiscalBoletim": {
-            "name": "FiscalBoletim",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "boletimID": {
-                    "name": "boletimID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Equipe": {
-                    "name": "Equipe",
-                    "isArray": false,
-                    "type": {
-                        "model": "Equipe"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "equipeID"
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "FiscalBoletims",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byBoletim",
-                        "fields": [
-                            "boletimID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byEquipe",
-                        "fields": [
-                            "equipeID"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "EquipeProjeto": {
-            "name": "EquipeProjeto",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Ativo": {
-                    "name": "Ativo",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "projetoID": {
-                    "name": "projetoID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Equipe": {
-                    "name": "Equipe",
-                    "isArray": false,
-                    "type": {
-                        "model": "Equipe"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "equipeID"
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "EquipeProjetos",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byEquipe",
-                        "fields": [
-                            "equipeID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byProjeto",
-                        "fields": [
-                            "projetoID"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "MaterialBoletim": {
-            "name": "MaterialBoletim",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "boletimID": {
-                    "name": "boletimID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Quantidade": {
-                    "name": "Quantidade",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Material": {
-                    "name": "Material",
-                    "isArray": false,
-                    "type": {
-                        "model": "Material"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "materialID"
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "MaterialBoletims",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byBoletim",
-                        "fields": [
-                            "boletimID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byMaterial",
-                        "fields": [
-                            "materialID"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "Material": {
-            "name": "Material",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "NomeMaterial": {
-                    "name": "NomeMaterial",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Unidade": {
-                    "name": "Unidade",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "MateriaisBoletim": {
-                    "name": "MateriaisBoletim",
-                    "isArray": true,
-                    "type": {
-                        "model": "MaterialBoletim"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "Material"
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Materials",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "Consistencia": {
-            "name": "Consistencia",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "TipoSolo": {
-                    "name": "TipoSolo",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Consistencias",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "Orientacao": {
-            "name": "Orientacao",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Codigo": {
-                    "name": "Codigo",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Sigla": {
-                    "name": "Sigla",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Descricao": {
-                    "name": "Descricao",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Ativo": {
-                    "name": "Ativo",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "AtividadeBoletims": {
-                    "name": "AtividadeBoletims",
-                    "isArray": true,
-                    "type": {
-                        "model": "AtividadeBoletim"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "orientacaoID"
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Orientacaos",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
         }
     },
     "enums": {},
     "nonModels": {},
+    "codegenVersion": "3.4.4",
     "version": "5f6d241c3d74da124df9e5796c2c3fdd"
 };

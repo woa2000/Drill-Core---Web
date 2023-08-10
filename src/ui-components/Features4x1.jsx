@@ -5,7 +5,7 @@
  **************************************************************************/
 
 /* eslint-disable */
-import React from "react";
+import * as React from "react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Flex, Text } from "@aws-amplify/ui-react";
 export default function Features4x1(props) {
@@ -20,8 +20,8 @@ export default function Features4x1(props) {
       position="relative"
       padding="40px 140px 40px 140px"
       backgroundColor="rgba(239,240,240,1)"
-      {...rest}
       {...getOverrideProps(overrides, "Features4x1")}
+      {...rest}
     >
       <Flex
         gap="24px"

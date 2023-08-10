@@ -4,29 +4,29 @@ import { schema } from './schema';
 
 
 
-const { UsuarioDG, UsuarioCliente, Cliente, Projeto, Turno, Boletim, Alvo, Furo, FuroBoletim, AtividadeBoletim, Atividade, Sonda, SupervisorBoletim, Equipe, AuxiliarBoletim, OperadorBoletim, FiscalBoletim, EquipeProjeto, MaterialBoletim, Material, Consistencia, Orientacao } = initSchema(schema);
+const { UsuarioDG, UsuarioCliente, Consistencia, AtividadeBoletim, EquipeProjeto, MaterialBoletim, FiscalBoletim, AuxiliarBoletim, OperadorBoletim, SupervisorBoletim, FuroBoletim, Boletim, Sonda, Material, Turno, Furo, Orientacao, Atividade, Alvo, Projeto, Cliente, Equipe } = initSchema(schema);
 
 export {
   UsuarioDG,
   UsuarioCliente,
-  Cliente,
-  Projeto,
-  Turno,
-  Boletim,
-  Alvo,
-  Furo,
-  FuroBoletim,
+  Consistencia,
   AtividadeBoletim,
-  Atividade,
-  Sonda,
-  SupervisorBoletim,
-  Equipe,
-  AuxiliarBoletim,
-  OperadorBoletim,
-  FiscalBoletim,
   EquipeProjeto,
   MaterialBoletim,
+  FiscalBoletim,
+  AuxiliarBoletim,
+  OperadorBoletim,
+  SupervisorBoletim,
+  FuroBoletim,
+  Boletim,
+  Sonda,
   Material,
-  Consistencia,
-  Orientacao
+  Turno,
+  Furo,
+  Orientacao,
+  Atividade,
+  Alvo,
+  Projeto,
+  Cliente,
+  Equipe
 };

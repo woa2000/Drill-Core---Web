@@ -26,7 +26,7 @@ export async function getMembros(): Promise<Equipe[]> {
 
 export async function getMembrosAtivos(): Promise<Equipe[]> {
   const equipe =  await DataStore
-    .query(Equipe, x => x.Ativo('eq', true), { sort: s => s.createdAt(SortDirection.DESCENDING)});
+    .query(Equipe, x => x.Ativo.eq(true), { sort: s => s.createdAt(SortDirection.DESCENDING)});
 
    return equipe;
 }

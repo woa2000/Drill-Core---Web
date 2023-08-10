@@ -5,7 +5,7 @@
  **************************************************************************/
 
 /* eslint-disable */
-import React from "react";
+import * as React from "react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Flex, Image, Text } from "@aws-amplify/ui-react";
 import MyIcon from "./MyIcon";
@@ -19,8 +19,8 @@ export default function SocialA(props) {
       position="relative"
       padding="24px 24px 24px 24px"
       backgroundColor="rgba(255,255,255,1)"
-      {...rest}
       {...getOverrideProps(overrides, "SocialA")}
+      {...rest}
     >
       <Flex
         gap="40px"

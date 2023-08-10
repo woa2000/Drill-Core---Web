@@ -5,7 +5,7 @@
  **************************************************************************/
 
 /* eslint-disable */
-import React from "react";
+import * as React from "react";
 import { Todo } from "../models";
 import {
   getOverrideProps,
@@ -15,11 +15,18 @@ import NewTodoItem from "./NewTodoItem";
 import { Collection } from "@aws-amplify/ui-react";
 export default function NewTodoItemCollection(props) {
   const { items: itemsProp, overrideItems, overrides, ...rest } = props;
+  const [items, setItems] = React.useState(undefined);
   const itemsDataStore = useDataStoreBinding({
     type: "collection",
     model: Todo,
   }).items;
-  const items = itemsProp !== undefined ? itemsProp : itemsDataStore;
+  React.useEffect(() => {
+    if (itemsProp !== undefined) {
+      setItems(itemsProp);
+      return;
+    }
+    setItems(itemsDataStore);
+  }, [itemsProp, itemsDataStore]);
   return (
     <Collection
       type="list"
@@ -28,8 +35,8 @@ export default function NewTodoItemCollection(props) {
       direction="column"
       justifyContent="stretch"
       items={items || []}
-      {...rest}
       {...getOverrideProps(overrides, "NewTodoItemCollection")}
+      {...rest}
     >
       {(item, index) => (
         <NewTodoItem

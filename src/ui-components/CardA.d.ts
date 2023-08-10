@@ -4,10 +4,18 @@
  * Any changes to this file will be overwritten when running amplify pull. *
  **************************************************************************/
 
-import React from "react";
+import * as React from "react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
-import { FlexProps } from "@aws-amplify/ui-react";
+import { FlexProps, ImageProps, TextProps } from "@aws-amplify/ui-react";
+export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
+export declare type CardAOverridesProps = {
+    CardA?: PrimitiveOverrideProps<FlexProps>;
+    image?: PrimitiveOverrideProps<ImageProps>;
+    "Text Grouping"?: PrimitiveOverrideProps<FlexProps>;
+    "Classic Long Sleeve T-Shirt"?: PrimitiveOverrideProps<TextProps>;
+    $99?: PrimitiveOverrideProps<TextProps>;
+} & EscapeHatchProps;
 export declare type CardAProps = React.PropsWithChildren<Partial<FlexProps> & {
-    overrides?: EscapeHatchProps | undefined | null;
+    overrides?: CardAOverridesProps | undefined | null;
 }>;
 export default function CardA(props: CardAProps): React.ReactElement;

@@ -12,6 +12,8 @@ import {DataStore} from 'aws-amplify';
 import './styles.css'
 import { Material } from '../../models';
 
+import * as XLSX from 'xlsx';
+
 function ListaObjetos({objetos, titulo, titulo_botao}) {
     const [modal_novo, setmodal_novo] = useState(false);
     const [modal_edicao, setmodal_edicao] = useState(false);
@@ -323,6 +325,28 @@ function ListaObjetos({objetos, titulo, titulo_botao}) {
         },
     ];
 
+    //create a function to import the data from excel file  and save it in the database 
+    const importarMateriais = async (file) => {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+
+      reader.onload = (e) => {
+        const data = e.target.result;
+        const workbook = XLSX.read(data, {
+          type: 'binary',
+        });
+        const first_sheet_name = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[first_sheet_name];
+        const data_json = XLSX.utils.sheet_to_json(worksheet);
+        data_json.forEach(async (element) => {
+          const response =   await materialServices.save(new Material({NomeMaterial : element.NomeMaterial, Unidade : element.Unidade}));
+          console.log('response => ',response)
+
+        });
+      };
+      reader.readAsBinaryString(file);
+    }
+
     return(
         <div>
             <div className='title'>
@@ -333,6 +357,13 @@ function ListaObjetos({objetos, titulo, titulo_botao}) {
                     setmodal_novo(true)
                     }}
                 >{titulo_botao}</Button>
+                {/* <input
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    importarMateriais(file);
+                  }}
+                /> */}
             </div>
             <Table columns={columns} dataSource={objetos} onChange={onChange} key='tableSonda'/>
             <ModalNovaObjeto 

@@ -16,6 +16,8 @@ import { Projeto } from '../../models';
 import SelectCliente from '../../components/SelectCliente';
 import internal from 'stream';
 
+import * as XLSX from 'xlsx';
+
 const { Option } = Select;
 
 const ModalNovoProjeto = ({modal_novo, setmodal_novo}) => {
@@ -25,6 +27,8 @@ const ModalNovoProjeto = ({modal_novo, setmodal_novo}) => {
   const [clienteId, setClienteId] = useState('')
 
   const salvarProjeto = async (nomeProjeto, clienteId) => {
+    console.log('1 => ', nomeProjeto);
+    console.log('2 => ', clienteId)
     const response = await projetoServices.salvarProjeto(nomeProjeto, clienteId);
     console.log('salvarProjeto', response)    
     if(response.success === true)
@@ -392,6 +396,28 @@ function ProjetoPage() {
     console.log('clientes -> ', clientes )
   }
 
+  //create a function to import the data from excel file  and save it in the database 
+  const importarProjetos = async (file) => {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = (e) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, {
+        type: 'binary',
+      });
+      const first_sheet_name = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[first_sheet_name];
+      const data_json = XLSX.utils.sheet_to_json(worksheet);
+      data_json.forEach(async (element) => {
+        const response =  await projetoServices.salvarProjeto(element.NomeProjeto, element.clienteID);
+        console.log('response => ',response)
+
+      });
+    };
+    reader.readAsBinaryString(file);
+  }
+
   return (
     <div>
       <div className='title'>
@@ -402,6 +428,13 @@ function ProjetoPage() {
               setmodal_novo(true)
             }}
         >Novo Projeto</Button>
+        {/* <input
+            type="file"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              importarProjetos(file);
+            }}
+          /> */}
       </div>
 
       <ListaClientes

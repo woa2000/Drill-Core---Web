@@ -20,21 +20,21 @@ export async function getTeams(): Promise<Equipe[]> {
 
 export async function getSupervisors(projectId: string): Promise<EquipeProjeto[]> {
   const response = await DataStore.query(
-    EquipeProjeto, x => x.projetoID('eq', projectId), {
+    EquipeProjeto, x => x.projetoID.eq(projectId), {
     sort: s => s.createdAt(SortDirection.ASCENDING)
   });
 
-  const supervisors = response as EquipeProjeto[];
+  const supervisors = await response as EquipeProjeto[];
 
   const filteredSupervisors = supervisors
-    .filter(x => x.Equipe?.Funcao === 'Supervisor');
+    .filter(x => x.Equipe.then(x => x?.Funcao === 'Supervisor'));
 
   return filteredSupervisors;
 }
 
 export async function getSupervisorProject(boletimID: string): Promise<SupervisorBoletim[]> {
   return await DataStore.query(
-    SupervisorBoletim, x => x.boletimID('eq', boletimID), {
+    SupervisorBoletim, x => x.boletimID.eq(boletimID), {
       sort: s => s.createdAt(SortDirection.DESCENDING)
     }
   )
@@ -42,15 +42,14 @@ export async function getSupervisorProject(boletimID: string): Promise<Superviso
 
 export async function saveSupervisors(supervisors: Equipe[], bulletinID: string): Promise<SupervisorBoletim> {
   return new Promise(resolve => {
-    supervisors.map(item => {
+    supervisors.map(async item => {
       DataStore.save(new SupervisorBoletim({
         boletimID: bulletinID,
-        Equipe: {
-          id: item.id,
+        Equipe: new Equipe({
           Nome: item.Nome,
           Funcao: item.Funcao,
-          Ativo: item.Ativo,
-        }
+          Ativo: item.Ativo,          
+        })
       }))
       .then(response => {
         resolve(response);
@@ -64,21 +63,21 @@ export async function saveSupervisors(supervisors: Equipe[], bulletinID: string)
 
 export async function getOperators(projectId: string): Promise<EquipeProjeto[]> {
   const response = await DataStore.query(
-    EquipeProjeto, x => x.projetoID('eq', projectId), {
+    EquipeProjeto, x => x.projetoID.eq(projectId), {
     sort: s => s.createdAt(SortDirection.ASCENDING)
   });
 
   const operators = response as EquipeProjeto[];
 
   const filteredOperators = operators
-    .filter(x => x.Equipe?.Funcao === 'Operador');
+    .filter(x => x.Equipe?.then(x => x?.Funcao === 'Operador'));
 
   return filteredOperators;
 }
 
 export async function getOperatorProject(boletimID: string): Promise<OperadorBoletim[]> {
   return await DataStore.query(
-    OperadorBoletim, x => x.boletimID('eq', boletimID), {
+    OperadorBoletim, x => x.boletimID.eq(boletimID), {
       sort: s => s.createdAt(SortDirection.DESCENDING)
     }
   )
@@ -86,15 +85,12 @@ export async function getOperatorProject(boletimID: string): Promise<OperadorBol
 
 export async function saveOperators(operators: Equipe[], bulletinID: string): Promise<OperadorBoletim> {
   return new Promise(resolve => {
-    operators.map(item => {
+    operators.map(async (item) => {
+      var equipe = await DataStore.query(Equipe, x => x.id.eq(item.id));
+
       DataStore.save(new OperadorBoletim({
         boletimID: bulletinID,
-        Equipe: {
-          id: item.id,
-          Nome: item.Nome,
-          Funcao: item.Funcao,
-          Ativo: item.Ativo,
-        }
+        Equipe: equipe[0]
       }))
       .then(response => {
         resolve(response);
@@ -108,21 +104,21 @@ export async function saveOperators(operators: Equipe[], bulletinID: string): Pr
 
 export async function getAssistants(projectId: string): Promise<EquipeProjeto[]> {
   const response = await DataStore.query(
-    EquipeProjeto, x => x.projetoID('eq', projectId), {
+    EquipeProjeto, x => x.projetoID.eq(projectId), {
     sort: s => s.createdAt(SortDirection.ASCENDING)
   });
 
   const assistants = response as EquipeProjeto[];
 
   const filteredAssistants = assistants
-    .filter(x => x.Equipe?.Funcao === 'Auxiliar');
+    .filter(x => x.Equipe?.then(x => x?.Funcao === 'Auxiliar' ));
 
   return filteredAssistants;
 }
 
 export async function getAssistantProject(boletimID: string): Promise<AuxiliarBoletim[]> {
   return await DataStore.query(
-    AuxiliarBoletim, x => x.boletimID('eq', boletimID), {
+    AuxiliarBoletim, x => x.boletimID.eq(boletimID), {
       sort: s => s.createdAt(SortDirection.DESCENDING)
     }
   )
@@ -130,15 +126,12 @@ export async function getAssistantProject(boletimID: string): Promise<AuxiliarBo
 
 export async function saveAssistants(assistants: Equipe[], bulletinID: string): Promise<AuxiliarBoletim> {
   return new Promise(resolve => {
-    assistants.map(item => {
+    assistants.map(async (item) => {
+      var equipe = await DataStore.query(Equipe, x => x.id.eq(item.id));
+
       DataStore.save(new AuxiliarBoletim({
         boletimID: bulletinID,
-        Equipe: {
-          id: item.id,
-          Nome: item.Nome,
-          Funcao: item.Funcao,
-          Ativo: item.Ativo,
-        }
+        Equipe: equipe[0]
       }))
       .then(response => {
         resolve(response);
@@ -152,29 +145,26 @@ export async function saveAssistants(assistants: Equipe[], bulletinID: string): 
 
 export async function getInspectors(projectId: string): Promise<EquipeProjeto[]> {
   const response = await DataStore.query(
-    EquipeProjeto, x => x.projetoID('eq', projectId), {
+    EquipeProjeto, x => x.projetoID.eq(projectId), {
     sort: s => s.createdAt(SortDirection.ASCENDING)
   });
 
   const inspectors = response as EquipeProjeto[];
 
   const filteredInspectors = inspectors
-    .filter(x => x.Equipe?.Funcao === 'Fiscal');
+    .filter(x => x.Equipe?.then(x => x?.Funcao === 'Fiscal'));
 
   return filteredInspectors;
 }
 
 export async function saveInspectors(inspectors: Equipe[], bulletinID: string): Promise<FiscalBoletim> {
   return new Promise(resolve => {
-    inspectors.map(item => {
+    inspectors.map(async (item) => {
+      var equipe = await DataStore.query(Equipe, x => x.id.eq(item.id));
+
       DataStore.save(new FiscalBoletim({
         boletimID: bulletinID,
-        Equipe: {
-          id: item.id,
-          Nome: item.Nome,
-          Funcao: item.Funcao,
-          Ativo: item.Ativo,
-        }
+        Equipe: equipe[0]
       }))
       .then(response => {
         resolve(response);

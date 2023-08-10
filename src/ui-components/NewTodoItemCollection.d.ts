@@ -4,10 +4,15 @@
  * Any changes to this file will be overwritten when running amplify pull. *
  **************************************************************************/
 
-import React from "react";
+import * as React from "react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { NewTodoItemProps } from "./NewTodoItem";
 import { CollectionProps } from "@aws-amplify/ui-react";
+export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
+export declare type NewTodoItemCollectionOverridesProps = {
+    NewTodoItemCollection?: PrimitiveOverrideProps<CollectionProps>;
+    NewTodoItem?: NewTodoItemProps;
+} & EscapeHatchProps;
 export declare type NewTodoItemCollectionProps = React.PropsWithChildren<Partial<CollectionProps<any>> & {
     items?: any[];
     overrideItems?: (collectionItem: {
@@ -15,6 +20,6 @@ export declare type NewTodoItemCollectionProps = React.PropsWithChildren<Partial
         index: number;
     }) => NewTodoItemProps;
 } & {
-    overrides?: EscapeHatchProps | undefined | null;
+    overrides?: NewTodoItemCollectionOverridesProps | undefined | null;
 }>;
 export default function NewTodoItemCollection(props: NewTodoItemCollectionProps): React.ReactElement;

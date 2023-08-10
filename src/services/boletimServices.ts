@@ -84,7 +84,7 @@ export async function getFuros(id: string): Promise<any> {
 
 export async function getHolesBulletin(bulletinID: string): Promise<FuroBoletim[]> {
     const response = await DataStore.query(
-        FuroBoletim, x => x.boletimID('eq', bulletinID), {
+        FuroBoletim, x => x.boletimID.eq(bulletinID), {
         sort: s => s.createdAt(SortDirection.ASCENDING)
     });
 
@@ -125,36 +125,39 @@ function CalculaPercentuarRecuperacao(De: number, Ate: number, Recuperacao: numb
 
 export async function getAtividades(boletimID: string): Promise<any> {
     const atividades = await DataStore
-        .query(AtividadeBoletim, x => x.boletimID('eq', boletimID), { sort: s => s.Inicio(SortDirection.ASCENDING) });
+        .query(AtividadeBoletim, (x) => x.boletimID.eq(boletimID), { sort: s => s.Inicio(SortDirection.ASCENDING) });
 
     console.log('atividades', atividades)
 
     const atividadesVM: AtividadeBoletimViewModel[] = []
-    atividades.forEach(atividade => {
+    atividades.forEach(async atividade => {
+        const Atividade = await atividade.Atividade;
+        const Furo = await atividade.Furo;
+
         atividadesVM.push({
-            Codigo: atividade.Atividade?.Codigo,
+            Codigo: Atividade?.Codigo,
             Inicio: atividade.Inicio,
             Termino: atividade.Termino,
             Intervalo: CalculaIntervalo(atividade.Inicio as string, atividade.Termino as string),
             De: atividade.De,
             Ate: atividade.Ate,
             TotalPerfurado: atividade.De != null ? atividade.Ate as number - atividade.De as number : null,
-            Furo: atividade.Furo?.NomeFuro,
+            Furo: Furo?.NomeFuro,
             Recuperacao: atividade.Recuperacao,
             PercentualRecuperacao: atividade.De != null ? CalculaPercentuarRecuperacao(atividade.De as number, atividade.Ate as number, atividade.Recuperacao as number) : null,
             Caixa: atividade.Caixa,
             Diametro: atividade.Diametro,
             CodigoOrientacao: atividade.CodigoOrientacao,
             Observacao: atividade.Observacao,
-            TipoAtividade: atividade.Atividade?.Tipo
+            TipoAtividade: Atividade?.Tipo
         });
     });
     return atividadesVM;
 }
 
 export async function save(form: Boletim): Promise<ModelResult> {
-    console.log('form ->', form);
-    const saved = await DataStore.save(new Boletim(form))
+    
+    const saved = await DataStore.save(form)
         .then(() => { return { success: true } as ModelResult; })
         .catch(() => { return { success: false } as ModelResult; });
 
@@ -173,20 +176,6 @@ export async function update(updateObject: Boletim, original: Boletim) {
 
     return saved;
 }
-
-//   export async function setActive(updateValue : any, object : Boletim) {
-//     //update the todo item with updateValue
-//     const saved = await DataStore.save(
-//         Sonda.copyOf(object, updated => {
-//           updated.Ativo = updateValue
-//         })
-//       )
-//       .then(() => { return { success: true} as ModelResult; })
-//       .catch(() => { return {success : false} as ModelResult; });
-
-//     return saved;
-//   }
-
 
 export async function deleteObject(object: Boletim): Promise<ModelResult> {
     const deleted = await DataStore.delete(object)
