@@ -8,13 +8,12 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { UsuarioCliente } from "../models";
+import { Diametro } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function UsuarioClienteUpdateForm(props) {
+export default function DiametroCreateForm(props) {
   const {
-    id: idProp,
-    usuarioCliente: usuarioClienteModelProp,
+    clearOnSuccess = true,
     onSuccess,
     onError,
     onSubmit,
@@ -24,32 +23,16 @@ export default function UsuarioClienteUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    userID: "",
+    Nome: "",
   };
-  const [userID, setUserID] = React.useState(initialValues.userID);
+  const [Nome, setNome] = React.useState(initialValues.Nome);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = usuarioClienteRecord
-      ? { ...initialValues, ...usuarioClienteRecord }
-      : initialValues;
-    setUserID(cleanValues.userID);
+    setNome(initialValues.Nome);
     setErrors({});
   };
-  const [usuarioClienteRecord, setUsuarioClienteRecord] = React.useState(
-    usuarioClienteModelProp
-  );
-  React.useEffect(() => {
-    const queryData = async () => {
-      const record = idProp
-        ? await DataStore.query(UsuarioCliente, idProp)
-        : usuarioClienteModelProp;
-      setUsuarioClienteRecord(record);
-    };
-    queryData();
-  }, [idProp, usuarioClienteModelProp]);
-  React.useEffect(resetStateValues, [usuarioClienteRecord]);
   const validations = {
-    userID: [],
+    Nome: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -77,7 +60,7 @@ export default function UsuarioClienteUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          userID,
+          Nome,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -107,13 +90,12 @@ export default function UsuarioClienteUpdateForm(props) {
               modelFields[key] = null;
             }
           });
-          await DataStore.save(
-            UsuarioCliente.copyOf(usuarioClienteRecord, (updated) => {
-              Object.assign(updated, modelFields);
-            })
-          );
+          await DataStore.save(new Diametro(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
+          }
+          if (clearOnSuccess) {
+            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -121,46 +103,45 @@ export default function UsuarioClienteUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "UsuarioClienteUpdateForm")}
+      {...getOverrideProps(overrides, "DiametroCreateForm")}
       {...rest}
     >
       <TextField
-        label="User id"
+        label="Nome"
         isRequired={false}
         isReadOnly={false}
-        value={userID}
+        value={Nome}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              userID: value,
+              Nome: value,
             };
             const result = onChange(modelFields);
-            value = result?.userID ?? value;
+            value = result?.Nome ?? value;
           }
-          if (errors.userID?.hasError) {
-            runValidationTasks("userID", value);
+          if (errors.Nome?.hasError) {
+            runValidationTasks("Nome", value);
           }
-          setUserID(value);
+          setNome(value);
         }}
-        onBlur={() => runValidationTasks("userID", userID)}
-        errorMessage={errors.userID?.errorMessage}
-        hasError={errors.userID?.hasError}
-        {...getOverrideProps(overrides, "userID")}
+        onBlur={() => runValidationTasks("Nome", Nome)}
+        errorMessage={errors.Nome?.errorMessage}
+        hasError={errors.Nome?.hasError}
+        {...getOverrideProps(overrides, "Nome")}
       ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Reset"
+          children="Clear"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || usuarioClienteModelProp)}
-          {...getOverrideProps(overrides, "ResetButton")}
+          {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -170,10 +151,7 @@ export default function UsuarioClienteUpdateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={
-              !(idProp || usuarioClienteModelProp) ||
-              Object.values(errors).some((e) => e?.hasError)
-            }
+            isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

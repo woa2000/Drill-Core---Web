@@ -6,6 +6,34 @@ import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@a
 
 
 
+type EagerDiametro = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Diametro, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly Nome?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyDiametro = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Diametro, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly Nome?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Diametro = LazyLoading extends LazyLoadingDisabled ? EagerDiametro : LazyDiametro
+
+export declare const Diametro: (new (init: ModelInit<Diametro>) => Diametro) & {
+  copyOf(source: Diametro, mutator: (draft: MutableModel<Diametro>) => MutableModel<Diametro> | void): Diametro;
+}
+
 type EagerUsuarioDG = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<UsuarioDG, 'id'>;

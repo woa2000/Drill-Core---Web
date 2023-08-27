@@ -3,6 +3,7 @@ import { DataStore, Predicates, SortDirection, API, graphqlOperation } from 'aws
 import * as queries from '.././graphql/queries';
 import { AtividadeBoletim, FuroBoletim } from "../models";
 import { isNonNullExpression } from "typescript";
+import * as atividadeService from './atividadeServices';
 
 import {
     IBulletinActivities
@@ -127,8 +128,6 @@ export async function getAtividades(boletimID: string): Promise<any> {
     const atividades = await DataStore
         .query(AtividadeBoletim, (x) => x.boletimID.eq(boletimID), { sort: s => s.Inicio(SortDirection.ASCENDING) });
 
-    console.log('atividades', atividades)
-
     const atividadesVM: AtividadeBoletimViewModel[] = []
     atividades.forEach(async atividade => {
         const Atividade = await atividade.Atividade;
@@ -152,11 +151,12 @@ export async function getAtividades(boletimID: string): Promise<any> {
             TipoAtividade: Atividade?.Tipo
         });
     });
+
     return atividadesVM;
 }
 
 export async function save(form: Boletim): Promise<ModelResult> {
-    
+
     const saved = await DataStore.save(form)
         .then(() => { return { success: true } as ModelResult; })
         .catch(() => { return { success: false } as ModelResult; });
@@ -203,28 +203,69 @@ export function ResultadoPerfuracao(atividades: IBulletinActivities[]): any {
 }
 
 export function ResultadoTimeSheet(atividades: IBulletinActivities[], tipo: string): any {
-    let totalMinutos = 0 as number;
-    let totalHoras = "00:00" as string;
-    let atividadesFiltradas: any[] = [];
-    try {
-        if (atividades != null) {
-            if (atividades !== undefined) {
-                atividadesFiltradas = atividades?.filter((atividade) => { return atividade.TipoAtividade?.indexOf(tipo) !== -1 });
+    let totalMinutos = 0;
+    let totalHoras = "00:00";
+    let atividadesFiltradas: IBulletinActivities[] = [];
 
-                atividadesFiltradas?.forEach(atividade => {
-                    let intervalo = atividade.Intervalo as string;
-                    totalMinutos += parseInt(intervalo.substring(0, 2)) * 60 + parseInt(intervalo.substring(3, 5));
-                });
-
-                totalHoras = MinutosParaHoras(totalMinutos);
-            }
-        }
+    if (!atividades) {
         return { TotalHoras: totalHoras, AtividadesPorHora: atividadesFiltradas };
+    }
+
+    try {
+        //atividadesFiltradas = atividades.filter(item => item.TipoAtividade?.indexOf(tipo) !== -1);
+        console.log('aqui 1 ->', atividades);
+        atividadesFiltradas =  atividades.filter(item => {
+            // Diagnosticando
+            //console.log("Dentro");
+            // console.log("TipoAtividade atual:", item.TipoAtividade);
+            // console.log("Tipo procurado:", tipo);
+        
+            // // Ignorando capitalização e verificando se o tipo corresponde
+            // return item.TipoAtividade?.toLowerCase().includes(tipo.toLowerCase());
+        });
+        console.log('aqui 2 ->');
+        console.log('atividadesFiltradas', atividadesFiltradas);
+
+        atividadesFiltradas.forEach(atividade => {
+            let intervalo = atividade.Intervalo;
+            if (intervalo && intervalo.includes(":")) {
+                totalMinutos += parseInt(intervalo.substring(0, 2)) * 60 + parseInt(intervalo.substring(3, 5));
+            }
+        });
+
+        totalHoras = MinutosParaHoras(totalMinutos);
     }
     catch (error) {
-        return { TotalHoras: totalHoras, AtividadesPorHora: atividadesFiltradas };
+        console.error("Erro ao processar timesheet:", error);
     }
+
+    return { TotalHoras: totalHoras, AtividadesPorHora: atividadesFiltradas };
 }
+
+
+// export function ResultadoTimeSheet(atividades: IBulletinActivities[], tipo: string): any {
+//     let totalMinutos = 0 as number;
+//     let totalHoras = "00:00" as string;
+//     let atividadesFiltradas: any[] = [];
+//     console.log('atividades timesheet ->', atividades);
+//     try {
+//         if (atividades != null && atividades !== undefined) {
+//             console.log('Tipo ->', tipo);
+//             atividadesFiltradas = atividades?.filter((item) => { return item.TipoAtividade?.indexOf(tipo) !== -1 });
+//             console.log('atividadesFiltradas ->', atividadesFiltradas);
+//             atividadesFiltradas?.forEach(atividade => {
+//                 let intervalo = atividade.Intervalo as string;
+//                 totalMinutos += parseInt(intervalo.substring(0, 2)) * 60 + parseInt(intervalo.substring(3, 5));
+//             });
+
+//             totalHoras = MinutosParaHoras(totalMinutos);
+//         }
+//         return { TotalHoras: totalHoras, AtividadesPorHora: atividadesFiltradas };
+//     }
+//     catch (error) {
+//         return { TotalHoras: totalHoras, AtividadesPorHora: atividadesFiltradas };
+//     }
+// }
 
 function MinutosParaHoras(minutos: number) {
     let intervalo = "";

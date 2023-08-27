@@ -6,21 +6,15 @@
 
 /* eslint-disable */
 import * as React from "react";
-import {
-  Button,
-  Flex,
-  Grid,
-  SwitchField,
-  TextField,
-} from "@aws-amplify/ui-react";
+import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Cliente } from "../models";
+import { Diametro } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function ClienteUpdateForm(props) {
+export default function DiametroUpdateForm(props) {
   const {
     id: idProp,
-    cliente: clienteModelProp,
+    diametro: diametroModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -30,40 +24,30 @@ export default function ClienteUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    NomeCliente: "",
-    LogoClient: "",
-    Ativo: false,
+    Nome: "",
   };
-  const [NomeCliente, setNomeCliente] = React.useState(
-    initialValues.NomeCliente
-  );
-  const [LogoClient, setLogoClient] = React.useState(initialValues.LogoClient);
-  const [Ativo, setAtivo] = React.useState(initialValues.Ativo);
+  const [Nome, setNome] = React.useState(initialValues.Nome);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = clienteRecord
-      ? { ...initialValues, ...clienteRecord }
+    const cleanValues = diametroRecord
+      ? { ...initialValues, ...diametroRecord }
       : initialValues;
-    setNomeCliente(cleanValues.NomeCliente);
-    setLogoClient(cleanValues.LogoClient);
-    setAtivo(cleanValues.Ativo);
+    setNome(cleanValues.Nome);
     setErrors({});
   };
-  const [clienteRecord, setClienteRecord] = React.useState(clienteModelProp);
+  const [diametroRecord, setDiametroRecord] = React.useState(diametroModelProp);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
-        ? await DataStore.query(Cliente, idProp)
-        : clienteModelProp;
-      setClienteRecord(record);
+        ? await DataStore.query(Diametro, idProp)
+        : diametroModelProp;
+      setDiametroRecord(record);
     };
     queryData();
-  }, [idProp, clienteModelProp]);
-  React.useEffect(resetStateValues, [clienteRecord]);
+  }, [idProp, diametroModelProp]);
+  React.useEffect(resetStateValues, [diametroRecord]);
   const validations = {
-    NomeCliente: [{ type: "Required" }],
-    LogoClient: [],
-    Ativo: [{ type: "Required" }],
+    Nome: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -91,9 +75,7 @@ export default function ClienteUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          NomeCliente,
-          LogoClient,
-          Ativo,
+          Nome,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -124,7 +106,7 @@ export default function ClienteUpdateForm(props) {
             }
           });
           await DataStore.save(
-            Cliente.copyOf(clienteRecord, (updated) => {
+            Diametro.copyOf(diametroRecord, (updated) => {
               Object.assign(updated, modelFields);
             })
           );
@@ -137,87 +119,33 @@ export default function ClienteUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "ClienteUpdateForm")}
+      {...getOverrideProps(overrides, "DiametroUpdateForm")}
       {...rest}
     >
       <TextField
-        label="Nome cliente"
-        isRequired={true}
-        isReadOnly={false}
-        value={NomeCliente}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              NomeCliente: value,
-              LogoClient,
-              Ativo,
-            };
-            const result = onChange(modelFields);
-            value = result?.NomeCliente ?? value;
-          }
-          if (errors.NomeCliente?.hasError) {
-            runValidationTasks("NomeCliente", value);
-          }
-          setNomeCliente(value);
-        }}
-        onBlur={() => runValidationTasks("NomeCliente", NomeCliente)}
-        errorMessage={errors.NomeCliente?.errorMessage}
-        hasError={errors.NomeCliente?.hasError}
-        {...getOverrideProps(overrides, "NomeCliente")}
-      ></TextField>
-      <TextField
-        label="Logo client"
+        label="Nome"
         isRequired={false}
         isReadOnly={false}
-        value={LogoClient}
+        value={Nome}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              NomeCliente,
-              LogoClient: value,
-              Ativo,
+              Nome: value,
             };
             const result = onChange(modelFields);
-            value = result?.LogoClient ?? value;
+            value = result?.Nome ?? value;
           }
-          if (errors.LogoClient?.hasError) {
-            runValidationTasks("LogoClient", value);
+          if (errors.Nome?.hasError) {
+            runValidationTasks("Nome", value);
           }
-          setLogoClient(value);
+          setNome(value);
         }}
-        onBlur={() => runValidationTasks("LogoClient", LogoClient)}
-        errorMessage={errors.LogoClient?.errorMessage}
-        hasError={errors.LogoClient?.hasError}
-        {...getOverrideProps(overrides, "LogoClient")}
+        onBlur={() => runValidationTasks("Nome", Nome)}
+        errorMessage={errors.Nome?.errorMessage}
+        hasError={errors.Nome?.hasError}
+        {...getOverrideProps(overrides, "Nome")}
       ></TextField>
-      <SwitchField
-        label="Ativo"
-        defaultChecked={false}
-        isDisabled={false}
-        isChecked={Ativo}
-        onChange={(e) => {
-          let value = e.target.checked;
-          if (onChange) {
-            const modelFields = {
-              NomeCliente,
-              LogoClient,
-              Ativo: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.Ativo ?? value;
-          }
-          if (errors.Ativo?.hasError) {
-            runValidationTasks("Ativo", value);
-          }
-          setAtivo(value);
-        }}
-        onBlur={() => runValidationTasks("Ativo", Ativo)}
-        errorMessage={errors.Ativo?.errorMessage}
-        hasError={errors.Ativo?.hasError}
-        {...getOverrideProps(overrides, "Ativo")}
-      ></SwitchField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
@@ -229,7 +157,7 @@ export default function ClienteUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || clienteModelProp)}
+          isDisabled={!(idProp || diametroModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -241,7 +169,7 @@ export default function ClienteUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || clienteModelProp) ||
+              !(idProp || diametroModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}
