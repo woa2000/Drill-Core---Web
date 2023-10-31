@@ -51,6 +51,7 @@ async function signOut() {
 
 const getSession = (): Promise<CognitoUserSession | null> => Auth.currentSession()
 
+
 function App() {
   const [user, setUser] = useState<IUser | null>(null);
 
