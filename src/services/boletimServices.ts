@@ -1,4 +1,4 @@
-import { Boletim } from "../models";
+import { Atividade, Boletim } from "../models";
 import { DataStore, Predicates, SortDirection, API, graphqlOperation } from 'aws-amplify';
 import * as queries from '.././graphql/queries';
 import { AtividadeBoletim, FuroBoletim } from "../models";
@@ -125,8 +125,21 @@ function CalculaPercentuarRecuperacao(De: number, Ate: number, Recuperacao: numb
 }
 
 export async function getAtividades(boletimID: string): Promise<any> {
-    const atividades = await DataStore
-        .query(AtividadeBoletim, (x) => x.boletimID.eq(boletimID), { sort: s => s.Inicio(SortDirection.ASCENDING) });
+    const response = await DataStore.query(
+        AtividadeBoletim, x => x.boletimID.eq(boletimID), {
+        sort: s => s.createdAt(SortDirection.ASCENDING)
+      });
+
+    console.log('atividade boletim -> ', response);
+    const atividades = await Promise.all(
+        response.map(async atividadeboletim => {
+            let atividade = await DataStore.query(Atividade, atividadeboletim.atividadeID);
+            return {
+            ...atividadeboletim,
+            Atividade: atividade
+            };
+        })
+    );    
 
     const atividadesVM: AtividadeBoletimViewModel[] = []
     atividades.forEach(async atividade => {
@@ -185,87 +198,64 @@ export async function deleteObject(object: Boletim): Promise<ModelResult> {
     return deleted;
 }
 
-
-export function ResultadoPerfuracao(atividades: IBulletinActivities[]): any {
+export async function ResultadoPerfuracao(atividadesPromise: Promise<IBulletinActivities[]>): Promise<any> {
     let totalPerfurado = 0;
     let totalRecuperado = 0;
-    let percentualRecuperacao = 0;
 
-    if (atividades != null) {
-        atividades?.forEach(atividade => {
+    const atividades = await atividadesPromise;
+
+    if (atividades) {
+        for (const atividade of atividades) {
             totalPerfurado += atividade.TotalPerfurado as number;
             totalRecuperado += atividade.Recuperacao as number;
-        });
-        percentualRecuperacao = (totalRecuperado / totalPerfurado) * 100;
+        }
     }
 
-    return { TotalPerfurado: totalPerfurado, TotalRecuperado: totalRecuperado, PercentualRecuperacao: Math.round(percentualRecuperacao) + "%" };
+    // Arredondando para 2 casas decimais
+    totalPerfurado = parseFloat(totalPerfurado.toFixed(2));
+    totalRecuperado = parseFloat(totalRecuperado.toFixed(2));
+
+    const percentualRecuperacao = totalPerfurado > 0 
+        ? (totalRecuperado / totalPerfurado) * 100 
+        : 0;
+
+    return {
+        TotalPerfurado: totalPerfurado,
+        TotalRecuperado: totalRecuperado,
+        PercentualRecuperacao: `${Math.round(percentualRecuperacao)}%`
+    };
 }
+
+
+
+
 
 export function ResultadoTimeSheet(atividades: IBulletinActivities[], tipo: string): any {
     let totalMinutos = 0;
-    let totalHoras = "00:00";
     let atividadesFiltradas: IBulletinActivities[] = [];
 
-    if (!atividades) {
-        return { TotalHoras: totalHoras, AtividadesPorHora: atividadesFiltradas };
+    if (!Array.isArray(atividades) || atividades.length === 0) {
+        return { TotalHoras: "00:00", AtividadesPorHora: atividadesFiltradas };
     }
 
-    try {
-        //atividadesFiltradas = atividades.filter(item => item.TipoAtividade?.indexOf(tipo) !== -1);
-        console.log('aqui 1 ->', atividades);
-        atividadesFiltradas =  atividades.filter(item => {
-            // Diagnosticando
-            //console.log("Dentro");
-            // console.log("TipoAtividade atual:", item.TipoAtividade);
-            // console.log("Tipo procurado:", tipo);
-        
-            // // Ignorando capitalização e verificando se o tipo corresponde
-            // return item.TipoAtividade?.toLowerCase().includes(tipo.toLowerCase());
-        });
-        console.log('aqui 2 ->');
-        console.log('atividadesFiltradas', atividadesFiltradas);
+    atividadesFiltradas = atividades.filter(item => 
+        item.TipoAtividade?.toLowerCase().includes(tipo.toLowerCase())
+    );
 
-        atividadesFiltradas.forEach(atividade => {
-            let intervalo = atividade.Intervalo;
-            if (intervalo && intervalo.includes(":")) {
-                totalMinutos += parseInt(intervalo.substring(0, 2)) * 60 + parseInt(intervalo.substring(3, 5));
-            }
-        });
+    atividadesFiltradas.forEach(atividade => {
+        const intervalo = atividade.Intervalo;
+        if (intervalo && /^\d{2}:\d{2}$/.test(intervalo)) { // Regex para validar o formato HH:MM
+            const [horas, minutos] = intervalo.split(':').map(Number);
+            totalMinutos += horas * 60 + minutos;
+        }
+    });
 
-        totalHoras = MinutosParaHoras(totalMinutos);
-    }
-    catch (error) {
-        console.error("Erro ao processar timesheet:", error);
-    }
+    const totalHoras = MinutosParaHoras(totalMinutos); 
 
     return { TotalHoras: totalHoras, AtividadesPorHora: atividadesFiltradas };
 }
 
 
-// export function ResultadoTimeSheet(atividades: IBulletinActivities[], tipo: string): any {
-//     let totalMinutos = 0 as number;
-//     let totalHoras = "00:00" as string;
-//     let atividadesFiltradas: any[] = [];
-//     console.log('atividades timesheet ->', atividades);
-//     try {
-//         if (atividades != null && atividades !== undefined) {
-//             console.log('Tipo ->', tipo);
-//             atividadesFiltradas = atividades?.filter((item) => { return item.TipoAtividade?.indexOf(tipo) !== -1 });
-//             console.log('atividadesFiltradas ->', atividadesFiltradas);
-//             atividadesFiltradas?.forEach(atividade => {
-//                 let intervalo = atividade.Intervalo as string;
-//                 totalMinutos += parseInt(intervalo.substring(0, 2)) * 60 + parseInt(intervalo.substring(3, 5));
-//             });
-
-//             totalHoras = MinutosParaHoras(totalMinutos);
-//         }
-//         return { TotalHoras: totalHoras, AtividadesPorHora: atividadesFiltradas };
-//     }
-//     catch (error) {
-//         return { TotalHoras: totalHoras, AtividadesPorHora: atividadesFiltradas };
-//     }
-// }
 
 function MinutosParaHoras(minutos: number) {
     let intervalo = "";

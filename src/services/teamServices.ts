@@ -33,11 +33,23 @@ export async function getSupervisors(projectId: string): Promise<EquipeProjeto[]
 }
 
 export async function getSupervisorProject(boletimID: string): Promise<SupervisorBoletim[]> {
-  return await DataStore.query(
+  const response =  await DataStore.query(
     SupervisorBoletim, x => x.boletimID.eq(boletimID), {
       sort: s => s.createdAt(SortDirection.DESCENDING)
     }
   )
+
+  const supervisor = await Promise.all(
+    response.map(async supervisorboletim => {
+      let equipe = await DataStore.query(Equipe, supervisorboletim.equipeID);
+      return {
+        ...supervisorboletim,
+        Equipe: equipe
+      };
+    })
+  );
+
+  return supervisor as any;
 }
 
 export async function saveSupervisors(supervisors: Equipe[], bulletinID: string): Promise<SupervisorBoletim> {
@@ -77,11 +89,23 @@ export async function getOperators(projectId: string): Promise<EquipeProjeto[]> 
 }
 
 export async function getOperatorProject(boletimID: string): Promise<OperadorBoletim[]> {
-  return await DataStore.query(
+  const response =  await DataStore.query(
     OperadorBoletim, x => x.boletimID.eq(boletimID), {
       sort: s => s.createdAt(SortDirection.DESCENDING)
     }
   )
+
+  const operador = await Promise.all(
+    response.map(async operadorboletim => {
+      let equipe = await DataStore.query(Equipe, operadorboletim.equipeID);
+      return {
+        ...operadorboletim,
+        Equipe: equipe
+      };
+    })
+  );
+
+  return operador as any;
 }
 
 export async function saveOperators(operators: Equipe[], bulletinID: string): Promise<OperadorBoletim> {
@@ -119,6 +143,25 @@ export async function getAssistants(projectId: string): Promise<EquipeProjeto[]>
 }
 
 export async function getAssistantProject(boletimID: string): Promise<AuxiliarBoletim[]> {
+  const response =  await DataStore.query(
+    AuxiliarBoletim, x => x.boletimID.eq(boletimID), {
+      sort: s => s.createdAt(SortDirection.DESCENDING)
+    }
+  )
+
+  const auxiliar = await Promise.all(
+    response.map(async auxiliarboletim => {
+      let equipe = await DataStore.query(Equipe, auxiliarboletim.equipeID);
+      return {
+        ...auxiliarboletim,
+        Equipe: equipe
+      };
+    })
+  );
+
+  return auxiliar as any;
+  
+  
   return await DataStore.query(
     AuxiliarBoletim, x => x.boletimID.eq(boletimID), {
       sort: s => s.createdAt(SortDirection.DESCENDING)

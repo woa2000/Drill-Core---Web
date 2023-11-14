@@ -8,6 +8,7 @@ import './styles.css';
 import { Table } from 'antd';
 import Moment from 'react-moment';
 import 'antd/dist/antd.css';
+import Logo from '../../assets/images/logo.svg';
 
 import { DataStore } from 'aws-amplify';
 import * as boletimServices from '../../services/boletimServices';
@@ -315,6 +316,7 @@ function DetalheBoletimPage() {
 
   async function getActivities(id) {
     const response = await boletimServices.getAtividades(id);
+    console.log('atividades  get ->', response);
     setAtividades(response);
 
     const response2 = await boletimServices.ResultadoPerfuracao(response);
@@ -348,10 +350,14 @@ function DetalheBoletimPage() {
 
   return (
     <div>      
+      
       <Pdf targetRef={ref} filename="Boletim.pdf" options={options} x={.1} y={.1} >
         {({ toPdf }) => <button onClick={toPdf} className="ant-btn ant-btn-primary btn-pdf">Gerar PDF</button>}
       </Pdf>
       <div ref={ref} className="boletim-pdf">
+        <div>
+          <img src={Logo} alt="logo" className='logo' />
+        </div>
         <HeaderBoletim
           boletim={boletim}
           furos={holes}

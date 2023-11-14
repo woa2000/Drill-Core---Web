@@ -274,12 +274,21 @@ export async function updateFuro(updateObject : Furo, original : Furo) {
 // EquipeProjeto
 
 export async function getEquipeProjeto(projetoID: string): Promise<EquipeProjeto[]> {
-  const equipeProjeto =  await DataStore
+  const response =  await DataStore
     .query(EquipeProjeto, x => x.projetoID.eq(projetoID), { sort: s => s.createdAt(SortDirection.DESCENDING)});
     
-  console.log("equipe => ", equipeProjeto);
-  
-  return equipeProjeto;
+
+  const equipeProjeto = await Promise.all(
+    response.map(async equipeprojeto => {
+      let equipe = await DataStore.query(Equipe, equipeprojeto.equipeID);
+      return {
+        ...equipeprojeto,
+        Equipe: equipe
+      };
+    })
+  );
+
+  return equipeProjeto as any;
 }
 
 export async function  salvarEquipeProjetoUnico(membroID:string , projetoID:string){ 

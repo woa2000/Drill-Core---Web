@@ -269,7 +269,7 @@ function ListaObjetos({objetos, titulo, titulo_botao}) {
             title: 'Data',
             dataIndex: 'Data',
             sorter: (a, b) => a.Data.localeCompare(b.Data),            
-            defaultSortOrder: 'ascend',
+            defaultSortOrder: 'descend',
             render: (item) => { 
               const date = new Date(item);
               return (<span>{format(new Date(date.toISOString().slice(0, -1)), "dd'/'MM'/'yyyy", {locale:ptBR, dateOptions})} </span>) 
